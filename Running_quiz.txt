@@ -1,0 +1,9 @@
+title running quiz
+loop Running Quiz
+Quiz->Student: Prompts studets for Q/A's
+Student->Answer: Students Create new Answers
+Answer->+Quiz: Server collects Answers
+Quiz->-Proctor: Quiz Displays Results
+Quiz->+Proctor: Prompt proctor for new question
+Proctor->-Quiz: Skip or create
+end
