@@ -4,24 +4,16 @@ Quiz-->Quiz:
 Answer-->Answer: 
 Vote-->Vote: 
 Proctor->Server:Proctor Connects to Server
+loop
+Proctor->Proctor: TeacherMakingQuiz
+end
 Proctor->+Quiz: Proctor creates Quiz
-Proctor->Quiz: Proctor adds Questions to Quiz
+Quiz->Server: Quiz is put on server
 Proctor->+Server: Proctor makes quiz public
 Student->Quiz: Joins Quiz
 Proctor->Server: Proctor starts the quiz
-loop Running Quiz
-Quiz->Student: Prompts studets for Q/A's
-Student->+Answer: Students Create new Answers
-Proctor->Quiz: Proctor stars a Vote
-Quiz->+Server: Server to send out vote phase
-Answer->-Server: Server collects Answers
-Server->Student:Sends out votes to students
-Student->+Vote: Student's vote on Answers
-Vote->-Quiz: Answer provided
-Quiz->Server: Server Calculates Results
-Server->Quiz: Server Displays Results
-Proctor->Quiz: Proctor starts new Question
-Quiz->Server: New Question phase
+loop
+Quiz->Quiz: see running_quiz.txt
 end
 Proctor->Quiz: Quiz ends
 Quiz->-Quiz: Quiz Ends Self
