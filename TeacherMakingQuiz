@@ -1,0 +1,8 @@
+title teacher making the quiz
+
+loop adding a question
+quiz->proctor: prompt for question
+proctor->quiz: input a question
+quiz->proctor: display question list 
+quiz->proctor: add another? 
+end
