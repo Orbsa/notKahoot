@@ -6,10 +6,11 @@ Vote-->Vote:
 Proctor->Server:Proctor Connects to Server
 Proctor->+Quiz: Proctor creates Quiz
 Proctor->Quiz: Proctor adds Questions to Quiz
-Quiz->+Server: Quiz is made public
+Proctor->+Server: Proctor makes quiz public
 Student->Quiz: Joins Quiz
+Proctor->Server: Proctor starts the quiz
 loop Running Quiz
-Proctor->Student: Prompts studets for Q/A's
+Quiz->Student: Prompts studets for Q/A's
 Student->+Answer: Students Create new Answers
 Proctor->Quiz: Proctor stars a Vote
 Quiz->+Server: Server to send out vote phase
@@ -25,4 +26,3 @@ end
 Proctor->Quiz: Quiz ends
 Quiz->-Quiz: Quiz Ends Self
 Server->-Server: Server shuts down
-
