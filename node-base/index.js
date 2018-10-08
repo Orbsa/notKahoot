@@ -1,5 +1,5 @@
 #!/usr/bin/env nodejs
-var express = require('express');
+//var express = require('express');
 var http = require('http');
 http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'});
