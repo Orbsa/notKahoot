@@ -2,4 +2,5 @@
 
 ####Node Dependencies: 
 HTTP
-
+Express
+SocketIO
