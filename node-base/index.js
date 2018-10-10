@@ -1,8 +1,8 @@
-#!/usr/bin/env nodejs
-//var express = require('express');
-var http = require('http');
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
-}).listen(3450, 'localhost');
-console.log('Server running at http://orbsa.net/3450/');
+const app = require('express')();
+var http = require("http").Server(app);
+
+app.get("/",function(req,res){
+	res.sendFile(__dirname + "/home.html");
+})
+
+http.listen(3450, ()=>console.log("Server at Localhost:3450"));
