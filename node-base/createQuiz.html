@@ -3,7 +3,8 @@
 <head>
 <title> Jew Hoot </title>
 </head>
-<!-- <script type="text/javascript" src="/class/Quiz.js"></script> -->
+<script src="/socket.io/socket.io.js"></script>
+
 <body>
 
     Name of Quiz:<input type="text" id="quiz-name"><br>
@@ -30,6 +31,9 @@
         questionsDif.appendChild(document.createElement("br"));
     }
 
+    var socket = io();
+
+
     function submit(){
         // console.log(questionElements);
         // console.log("Submit was pressed");
@@ -50,6 +54,7 @@
         quiz = new createQuizObj(quizName,questions);
         console.log(quiz);
         //now we just need to sent the quiz obj here. 
+        socket.emit('create-quiz', quiz);
     }
 
 
