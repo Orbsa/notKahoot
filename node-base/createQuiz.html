@@ -3,7 +3,7 @@
 <head>
 <title> Jew Hoot </title>
 </head>
-<script type="text/javascript" src="/class/Quiz.js"></script>
+<!-- <script type="text/javascript" src="/class/Quiz.js"></script> -->
 <body>
 
     Name of Quiz:<input type="text" id="quiz-name"><br>
@@ -20,6 +20,7 @@
     questionElements=[];
 
     function addQuestion(){
+        var questionsDif = document.getElementById('questions');
         var question = document.createElement("input");
         question.setAttribute('id',"question-"+questionId);
         question.setAttribute('type',"text");
