@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Jew Hoot </title>
+</head>
+<script type="text/javascript" src="/class/Quiz.js"></script>
+<body>
+
+    Name of Quiz:<input type="text" id="quiz-name"><br>
+    <button onclick="addQuestion()">Add a question!</button>
+    <dif id="questions">
+        <br>
+
+    </dif>
+    <button onclick="submit();">Submit</button>
+        
+</body>
+<script>    
+    questionId=0;
+    questionElements=[];
+
+    function addQuestion(){
+        var question = document.createElement("input");
+        question.setAttribute('id',"question-"+questionId);
+        question.setAttribute('type',"text");
+        questionId+=1;
+        questionElements.push(question);
+        questionsDif.appendChild(question);
+        questionsDif.appendChild(document.createElement("br"));
+    }
+
+    function submit(){
+        console.log(questionElements);
+        console.log("Submit was pressed");
+    }
+
+</script>
+</html>
+
