@@ -12,4 +12,29 @@ var quiz = {
     }
 };
 
-module.exports=quiz;
+quizFromClientCreator = function(quizobj,moderatorName){
+    q= new quiz.quiz(quizobj.name,moderatorName);
+    q.questions = quizobj.questions;
+
+    return q
+} 
+
+module.exports.quiz=quiz;
+module.exports.quizCreator=quizFromClientCreator;
+
+
+//Comunications for quizCreator
+
+/*
+On server:
+
+socket.on('create-quiz',function(quizobj){
+        q = quizFromClientCreator(quizobj,"<name>");
+        console.log(q);
+      });
+
+
+On Client:
+
+    socket.emit('create-quiz', quiz);
+*/
