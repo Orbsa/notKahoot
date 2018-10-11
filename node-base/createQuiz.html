@@ -31,9 +31,35 @@
     }
 
     function submit(){
-        console.log(questionElements);
-        console.log("Submit was pressed");
+        // console.log(questionElements);
+        // console.log("Submit was pressed");
+        quizName = document.getElementById('quiz-name').value;
+        // console.log(quizName);
+        if (quizName == ''){
+            alert("You forgot to put a quiz name.");
+            return;
+        }
+        questions = []
+        for (x in questionElements){
+            txt = questionElements[x].value;
+            // console.log(txt);
+            if (txt !=''){
+                questions.push(txt);
+            }
+        }
+        quiz = new createQuizObj(quizName,questions);
+        console.log(quiz);
+        //now we just need to sent the quiz obj here. 
     }
+
+
+
+    function createQuizObj(name,questions) { 
+        this.name = name; //Name of quiz. 
+        this.questions =questions; //List of questions on quiz.
+        //this.moderator = moderator; // Owner of the quiz.
+    }
+
 
 </script>
 </html>
