@@ -3,18 +3,29 @@
 <head>
 <title> Not KaHoot </title>
 </head>
+
+<script src="/socket.io/socket.io.js"></script>
+
 <body>
 	<h1> Not KaHoot </h1>
 	<form>
 		Quiz ID:<br>
-		<input type="text" name="quiz id">	
-		<input type="submit" value="submit">
+		<input type="text" name="quiz id" id="id">	
+		<button onclick="checkId();">Submit</button>
 	</form>
 
 	<a href="https://orbsa.net/loginasadmin"> Proctor login </a>
-	<script src="/socket.io/socket.io.js"></script>
 	<script>
 		var socket = io();
+		
+		function checkId(){
+			var id = document.getElementById('id').value;
+			//console.log(id);
+			if (id == ''){
+				alert("please insert a quiz id");
+				return;
+			}
+		}
 	</script>
 </body>
 </html>
