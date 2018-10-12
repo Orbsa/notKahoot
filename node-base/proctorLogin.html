@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Not KaHoot  </title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+
+<body>
+	Username: 
+	<input type="text" id="username"><br>
+	<input type="password" id="password"><br>
+	<button onclick="checkCreds()">submit</button>
+</body>
+<script>
+	function checkCreds(){
+		var username = document.getElementById('username');
+		var password = document.getElementById('password');
+
+		if (username == '' || password == ''){
+			alert("invalid credentials");
+			return;
+		}
+	}
+</script>
+</html>
