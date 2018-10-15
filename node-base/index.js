@@ -8,9 +8,6 @@ app.get("/",function(req,res){
 	res.sendFile(__dirname + "/home.html");
 })
 
-app.get("/proctorLogin",function(req,res){
-	res.sendFile(__dirname + "/home.html");
-})
 
 app.get("/createQuiz",function(req,res){
 	res.sendFile(__dirname + "/createQuiz.html");
