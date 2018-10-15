@@ -12,6 +12,10 @@ app.get("/createQuiz",function(req,res){
 	res.sendFile(__dirname + "/createQuiz.html");
 })
 
+app.get("/proctorLogin",function(req,res){
+	res.sendFile(__dirname + "/proctorLogin.html");
+})
+
 io.on('connection', function(socket){
 	console.log('user connected');
 	socket.on('disconnect', function(){
