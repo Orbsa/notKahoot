@@ -4,11 +4,10 @@
 // etc.
 //
 
-var Question= {
-    question: function (text) { 
+
+    function Question(text) { 
         this.text = text; //Name of quiz. 
         this.answers=[]; //List of questions on quiz.
     }
-};
 
 module.exports=Question;
