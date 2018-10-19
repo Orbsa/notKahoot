@@ -3,11 +3,10 @@
 // cat.votes+=1
 // etc.
 
-var Answer= {
-    answer: function (text) { 
+
+    function answer(text) { 
         this.text = text; //Name of quiz. 
         this.votes = 0;
     }
-};
 
-module.exports=Answer;
+module.exports=answer;

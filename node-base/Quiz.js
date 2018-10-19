@@ -3,14 +3,14 @@
 
 
 
-var quiz = {
-    quiz: function (name,moderator) { 
+
+    function quiz(name,moderator) { 
         this.name = name; //Name of quiz. 
         this.questions =[]; //List of questions on quiz.
         this.users = []; //Users currently on quiz.
         this.moderator = moderator; // Owner of the quiz.
     }
-};
+
 
 quizFromClientCreator = function(quizobj,moderatorName){
     q= new quiz.quiz(quizobj.name,moderatorName);
