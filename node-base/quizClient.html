@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Not KaHoot  </title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+
+<body>
+    <h2 id="quiz-name">Quiz name</h2>
+    <h1 id="question-text">Question text</h1>
+    <div id="answeres" > </div>
+	
+</body>
+<script>
+    function setQuizTitle(title){
+        var quizNameEl = document.getElementById("quiz-name");
+        quizNameEl.textContent = title;
+    }
+    function setQuestionTest(title){
+        var questionNameEl = document.getElementById("question-text");
+        questionNameEl.textContent = title;
+    }
+    function setAnswers(answers){
+        var answeresDiv = document.getElementById("answeres");
+        
+        for (x in answers){
+            var answer = document.createElement("h3");
+            answer.setAttribute("id","answer"+x);
+            answer.textContent = answers[x];
+            answeresDiv.appendChild(answer);
+        }
+    }
+
+
+
+</script>
+</html>
