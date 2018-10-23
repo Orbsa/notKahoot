@@ -12,24 +12,52 @@
 	
 </body>
 <script>
+
+    var socket = io();
+
     function setQuizTitle(title){
         var quizNameEl = document.getElementById("quiz-name");
         quizNameEl.textContent = title;
-    }
-    function setQuestionTest(title){
+    };
+
+    function setQuestionText(title){
         var questionNameEl = document.getElementById("question-text");
         questionNameEl.textContent = title;
-    }
+    };
+
     function setAnswers(answers){
+
         var answeresDiv = document.getElementById("answeres");
-        
+        answeresDiv.innerHTML = "";
         for (x in answers){
             var answer = document.createElement("h3");
             answer.setAttribute("id","answer"+x);
-            answer.textContent = answers[x];
+            answer.textContent = answers[x].text;
             answeresDiv.appendChild(answer);
         }
-    }
+    };
+
+    //need: quizName, quizQuestion, quizAnswers
+
+    socket.on('quiz-client',function(QuizCreate){
+
+        console.log(QuizCreate);
+        setQuizTitle(QuizCreate.name);
+        setQuestionText(QuizCreate.question.text);
+        setAnswers(QuizCreate.question.answers);
+
+      });
+
+
+    // -------On Server-----------------  
+    //   io.emit('quiz-client',{
+    //     name : QuizCreate.name,
+    //     question : QuizCreate.questions[0]
+    // }); 
+    // This should be sent to a specific client.
+    // QuizCreate is a complete quiz object. 
+
+
 
 
 
