@@ -21,6 +21,10 @@ app.get("/quizClient",function(req,res){
 	res.sendFile(__dirname + "/quizClient.html");
 })
 
+app.get("/proctorLanding",function(req,res){
+    res.sendFile(__dirname + "/proctorLanding.html");
+})
+
 io.on('connection', function(socket){
 	console.log('user connected');
 	socket.on('disconnect', function(){
