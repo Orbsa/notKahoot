@@ -5,9 +5,9 @@
 </head>
 <script src="/socket.io/socket.io.js"></script>
 
-<body>
+<body onload="getQuizInfo()">
 
-    Name of Quiz:<input type="text" id="quiz-name"><br>
+    Name of Quiz:<input type="text" id="quiz-name" value="quiz.name"><br>
     <button onclick="addQuestion()">Add a question!</button>
     <dif id="questions">
         <br>
@@ -17,8 +17,28 @@
         
 </body>
 <script>   
-    questionId=0;
+    var url = new URL(document.URL);
+    var quiz_id = url.searchParams.get("quiz_id"); 
+    console.log('quiz_id in createQuiz ' + quiz_id);
+    
     questionElements=[];
+    quizCount = 0;
+    function getQuizInfo() {
+        //get quiz from database with quiz id
+        quizCount = 3
+        for(var i = 0; i < quizCount; i++){
+            var questionsDif = document.getElementById('questions');
+            var question = document.createElement("input");         
+            question.setAttribute('id',"question-"+"quiz.questin_id");   
+            question.setAttribute('value',"quiz.question");
+            questionElements.push(question);
+            questionsDif.appendChild(question);
+            questionsDif.appendChild(document.createElement("br"));
+        }
+
+    }
+    
+    questionId=quizCount + 1;
 
     function addQuestion(){
         var questionsDif = document.getElementById('questions');
