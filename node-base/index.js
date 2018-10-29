@@ -3,6 +3,7 @@
 const app = require('express')();
 var http = require("http").Server(app);
 var io = require('socket.io')(http);
+var testQuiz = require("./QuizCreationExample.js"); //This is just for testing. 
 
 app.get("/",function(req,res){
 	res.sendFile(__dirname + "/home.html");
@@ -31,11 +32,26 @@ app.get("/proctorLanding",function(req,res){
 
 io.on('connection', function(socket){
 	console.log('user connected');
+
+	socket.on('start-quiz' ,function(data){
+		console.log("The quiz id: "+data);
+		startQuiz(data,socket);
+	});
+
 	socket.on('disconnect', function(){
 		console.log('user left');
 	});
 });
 
 
+//Function for the protocol of a quiz. 
+function startQuiz(quizId,socket){
+	socket.emit('quiz-client',{
+		    name : "This is quiz number: " +quizId,
+		    question : "some questions"
+		});
+}
+
+// console.log(testQuiz.name);
 
 http.listen(3450, ()=>console.log("Server at Localhost:3450"));

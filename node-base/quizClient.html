@@ -13,6 +13,12 @@
 </body>
 <script>
 
+
+    //Gathering the quiz ID out of the url. 
+    let url = new URL(document.URL);
+    quizId=new URL(document.URL).searchParams.get("quizID");
+    console.log(quizId);
+
     var socket = io();
 
     function setQuizTitle(title){
@@ -38,17 +44,14 @@
     };
 
     //need: quizName, quizQuestion, quizAnswers
-
+    /*This is for recieving quiz information*/
     socket.on('quiz-client',function(QuizCreate){
-
         console.log(QuizCreate);
         setQuizTitle(QuizCreate.name);
         setQuestionText(QuizCreate.question.text);
         setAnswers(QuizCreate.question.answers);
 
       });
-
-
     // -------On Server-----------------  
     //   io.emit('quiz-client',{
     //     name : QuizCreate.name,
@@ -58,6 +61,8 @@
     // QuizCreate is a complete quiz object. 
 
 
+
+    socket.emit('start-quiz',quizId);
 
 
 
