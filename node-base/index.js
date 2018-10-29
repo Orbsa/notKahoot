@@ -9,6 +9,10 @@ app.get("/",function(req,res){
 })
 
 
+app.get("/editQuiz",function(req,res){
+	res.sendFile(__dirname + "/editQuiz.html");
+})
+
 app.get("/createQuiz",function(req,res){
 	res.sendFile(__dirname + "/createQuiz.html");
 })

@@ -10,14 +10,14 @@
     
 <script>
     function editQuiz(index){
-        window.location.href = "createQuiz?quizID=" + index;
+        window.location.href = "editQuiz?quiz_id=" + index;
     }
     function deleteQuiz(index){
         //delete quiz from index
         console.log('deleting a quiz');
     }
     function startQuiz(index){
-        window.location.href = "quizClient?quizID=" + index;
+        window.location.href = "quizClient?quiz_id=" + index;
     }
 
     function createList() {
