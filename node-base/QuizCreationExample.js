@@ -25,4 +25,6 @@ quiz1.questions.push(question1);
 quiz1.questions.push(question2);
 
 
-console.log(quiz1);
+// console.log(quiz1);
+
+module.exports = quiz1;
