@@ -16,7 +16,10 @@
     <button onclick="submit();">Submit</button>
         
 </body>
-<script>    
+<script>   
+    var url = new URL(document.URL);
+    var quiz_id = url.searchParams.get("quiz_id"); 
+    console.log('quiz_id in createQuiz ' + quiz_id);
     questionId=0;
     questionElements=[];
 
