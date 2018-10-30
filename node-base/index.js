@@ -30,6 +30,10 @@ app.get("/proctorLanding",function(req,res){
     res.sendFile(__dirname + "/proctorLanding.html");
 })
 
+app.get("/userclient", function(req,res){
+	res.sendFile(__dirname + "/userclient.html");
+})
+
 io.on('connection', function(socket){
 	console.log('user connected');
 
@@ -46,9 +50,10 @@ io.on('connection', function(socket){
 
 //Function for the protocol of a quiz. 
 function startQuiz(quizId,socket){
+
 	socket.emit('quiz-client',{
-		    name : "This is quiz number: " +quizId,
-		    question : "some questions"
+		    name : testQuiz.name,
+		    // question : testQuiz.questions[0]
 		});
 }
 
