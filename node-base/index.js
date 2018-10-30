@@ -5,6 +5,9 @@ var http = require("http").Server(app);
 var io = require('socket.io')(http);
 var testQuiz = require("./QuizCreationExample.js"); //This is just for testing. 
 
+
+var openQuizes = [];
+
 app.get("/",function(req,res){
 	res.sendFile(__dirname + "/home.html");
 })
@@ -23,7 +26,18 @@ app.get("/proctorLogin",function(req,res){
 })
 
 app.get("/quizClient",function(req,res){
-	res.sendFile(__dirname + "/quizClient.html");
+	//Here we check to see if there is that quiz in the database. 
+	//For now we will just use the test quiz. 
+	//TODO: add a database check and load here. 
+	if(req.param('quizId')==3){
+		openQuizes[3] = testQuiz;
+		console.log("Loaded quiz: "+ testQuiz);
+		res.sendFile(__dirname + "/quizClient.html");
+	}
+	else{
+		res.send("There is no quiz with that id.");
+	}
+
 })
 
 app.get("/proctorLanding",function(req,res){
