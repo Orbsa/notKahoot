@@ -30,7 +30,7 @@ app.get("/proctorLanding",function(req,res){
     res.sendFile(__dirname + "/proctorLanding.html");
 })
 
-app.get("/userclient", function(req,res){
+app.get("/userClient", function(req,res){
 	res.sendFile(__dirname + "/userclient.html");
 })
 
@@ -55,6 +55,15 @@ function startQuiz(quizId,socket){
 		    name : testQuiz.name+ quizId,
 		    // question : testQuiz.questions[0]
 		});
+
+	socket.on('start', function(){
+		socket.emit('quiz-client',{
+		    name : testQuiz.name+ quizId,
+		    question : testQuiz.questions[0]
+		});
+	});
+
+
 }
 
 // console.log(testQuiz.name);

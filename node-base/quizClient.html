@@ -7,20 +7,23 @@
 
 <body>
     <h2 id="quiz-name">Quiz name</h2>
-    <h1 id="question-text">Question text</h1>
+    <h1 id="question-text"></h1>
     <div id="answeres" > 
         <h3 id="quiz-id">Log on with quiz id: </h3>
-        <button onclick="startQuiz()" > Start Quiz </button>
+        <button type="button" onclick="startQuiz()" > Start Quiz </button>
     </div>
 	
 </body>
 <script>
 
 
-    //Gathering the quiz ID out of the url. 
+    //---Gathering the quiz ID out of the url. 
     let url = new URL(document.URL);
     quizId=new URL(document.URL).searchParams.get("quizId");
     console.log(quizId);
+    var quizIdEl = document.getElementById("quiz-id");
+    quizIdEl.innerHTML+=quizId;
+    //---
 
     var socket = io();
 
@@ -47,7 +50,7 @@
     };
 
     function startQuiz(){
-
+        socket.emit('start', quizId);
     }
 
     //need: quizName, quizQuestion, quizAnswers
@@ -55,8 +58,10 @@
     socket.on('quiz-client',function(QuizCreate){
         console.log(QuizCreate);
         setQuizTitle(QuizCreate.name);
-        setQuestionText(QuizCreate.question.text);
-        setAnswers(QuizCreate.question.answers);
+        if('question' in QuizCreate){
+            setQuestionText(QuizCreate.question.text);
+            setAnswers(QuizCreate.question.answers);
+        }
 
       });
 
