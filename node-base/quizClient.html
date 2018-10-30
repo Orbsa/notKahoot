@@ -19,7 +19,7 @@
 
     //Gathering the quiz ID out of the url. 
     let url = new URL(document.URL);
-    quizId=new URL(document.URL).searchParams.get("quizID");
+    quizId=new URL(document.URL).searchParams.get("quizId");
     console.log(quizId);
 
     var socket = io();
