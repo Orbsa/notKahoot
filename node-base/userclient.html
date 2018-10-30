@@ -6,25 +6,24 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <body>
-    <h2 id="quiz-name">Quiz name</h2>
+    <h2 id="quiz-name">Quiz name not set</h2>
     <h1 id="question-text"></h1>
     <div id="answeres" > 
-        <h3 id="quiz-id">Log on with quiz id: </h3>
-        <button type="button" onclick="startQuiz()" > Start Quiz </button> <br>
-        <div id="people-in-quiz"></div>
+        <button onclick="sendName()">Name</button> <input type="text" id="user-name">
+       
     </div>
-	
+
+
 </body>
 <script>
 
 
-    //---Gathering the quiz ID out of the url. 
+    //Gathering the quiz ID out of the url. 
     let url = new URL(document.URL);
     quizId=new URL(document.URL).searchParams.get("quizId");
     console.log(quizId);
-    var quizIdEl = document.getElementById("quiz-id");
-    quizIdEl.innerHTML+=quizId;
-    //---
+
+    var userName; //This holds the name the user picked for the quiz. 
 
     var socket = io();
 
@@ -50,15 +49,19 @@
         }
     };
 
-    function addName(Name){
-        var lobbyEl = document.getElementById("people-in-quiz");
-        var nameSpan = document.createElement('h4');
-        nameSpan.textContent = Name;
-        lobbyEl.appendChild(nameSpan);
-    }
 
-    function startQuiz(){
-        socket.emit('start', quizId);
+    function sendName(){
+        var nameEl = document.getElementById("user-name");
+        if( nameEl.value == ""){
+            alert("You must choose a name");
+        }
+        else{
+            userName = nameEl.value;
+            //This sends the name to the server. 
+            console.log("Sending to server: "+ {"quizId": quizId, "name": nameEl.value});
+            socket.emit("quiz-lobby-name",{"quizId": quizId, "name": nameEl.value});
+            var answeresDiv = document.getElementById("answeres");
+            answeresDiv.innerHTML = "Waiting for quiz to start.";}
     }
 
     //need: quizName, quizQuestion, quizAnswers
@@ -72,21 +75,15 @@
         }
 
       });
-      
-        // -------On Server-----------------  
-        //   io.emit('quiz-client',{
-        //     name : QuizCreate.name,
-        //     question : QuizCreate.questions[0]
-        // }); 
-        // This should be sent to a specific client.
-        // QuizCreate is a complete quiz object. 
 
-    socket.on("quiz-join-name", function(nameObj){
-        if(quizId == nameObj["quizId"]){
-            console.log(nameObj);
-            addName(nameObj["name"]);
-        }
-      });
+
+    // -------On Server-----------------  
+    //   io.emit('quiz-client',{
+    //     name : QuizCreate.name,
+    //     question : QuizCreate.questions[0]
+    // }); 
+    // This should be sent to a specific client.
+    // QuizCreate is a complete quiz object. 
 
 
 

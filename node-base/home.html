@@ -10,8 +10,8 @@
 	<h1> Not KaHoot </h1>
 	<form>
 		Quiz ID:<br>
-		<input type="text" name="quiz id" id="id">	
-		<button onclick="checkId();">Submit</button>
+		<input type="text" name="quizId" id="id">	
+		<button type="button" onclick="checkId();">Submit</button>
 	</form>
 
 	<a href="proctorLogin"> Proctor login </a>
@@ -25,7 +25,12 @@
 				alert("please insert a quiz id");
 				return;
 			}
+			else{
+				console.log(id);
+				self.location.assign("userClient?quizId="+id);	
+			}		
 		}
+	
 	</script>
 </body>
 </html>
