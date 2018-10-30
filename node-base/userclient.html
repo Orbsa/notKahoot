@@ -9,7 +9,7 @@
     <h2 id="quiz-name">Quiz name not set</h2>
     <h1 id="question-text"></h1>
     <div id="answeres" > 
-        <button>Name</button> <input type="text" name="user-name">
+        <button onclick="sendName()">Name</button> <input type="text" id="user-name">
        
     </div>
 
@@ -22,6 +22,8 @@
     let url = new URL(document.URL);
     quizId=new URL(document.URL).searchParams.get("quizId");
     console.log(quizId);
+
+    var userName; //This holds the name the user picked for the quiz. 
 
     var socket = io();
 
@@ -48,8 +50,18 @@
     };
 
 
-    function startQuiz(){
-
+    function sendName(){
+        var nameEl = document.getElementById("user-name");
+        if( nameEl.value == ""){
+            alert("You must choose a name");
+        }
+        else{
+            userName = nameEl.value;
+            //This sends the name to the server. 
+            console.log("Sending to server: "+{"quizId": quizId, "name": nameEl.value});
+            socket.emit("quiz-lobby-name",{"quizId": quizId, "name": nameEl.value});
+            var answeresDiv = document.getElementById("answeres");
+            answeresDiv.innerHTML = "Waiting for quiz to start.";}
     }
 
     //need: quizName, quizQuestion, quizAnswers
@@ -57,15 +69,14 @@
     socket.on('quiz-client',function(QuizCreate){
         console.log(QuizCreate);
         setQuizTitle(QuizCreate.name);
-        setQuestionText(QuizCreate.question.text);
-        setAnswers(QuizCreate.question.answers);
+        if('question' in QuizCreate){
+            setQuestionText(QuizCreate.question.text);
+            setAnswers(QuizCreate.question.answers);
+        }
 
       });
 
-    socket.on("quiz-lobby-name", function(name){
 
-    });
-    
     // -------On Server-----------------  
     //   io.emit('quiz-client',{
     //     name : QuizCreate.name,
@@ -76,7 +87,7 @@
 
 
 
-    // socket.emit('start-quiz',quizId);
+    socket.emit('start-quiz',quizId);
 
 
 
