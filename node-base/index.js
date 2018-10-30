@@ -45,7 +45,6 @@ app.get("/proctorLanding",function(req,res){
 })
 
 app.get("/userClient", function(req,res){
-	console.log("here1: "+req.param("quiId"));
 	if(req.param('quizId') in openQuizes){
 		// openQuizes[req.param('quizId')] = testQuiz;
 		console.log("User wants to join quiz: "+ req.param('quizId'));
@@ -90,7 +89,6 @@ function startQuiz(quizId,socket){
 
 	socket.on("quiz-lobby-name", function(data){
 		if(quizId == data["quizId"]){
-			//sends data to quizClient. 
 			openQuizes[quizId].users.push(new User(data["name"]));
 			//Note: This socket sends to everything. So there is a check on the quiz client for quizId. 
 			io.emit("quiz-join-name", data);

@@ -52,7 +52,7 @@
 
     function addName(Name){
         var lobbyEl = document.getElementById("people-in-quiz");
-        var nameSpan = document.createElement('span');
+        var nameSpan = document.createElement('h4');
         nameSpan.textContent = Name;
         lobbyEl.appendChild(nameSpan);
     }
@@ -72,6 +72,7 @@
         }
 
       });
+      
         // -------On Server-----------------  
         //   io.emit('quiz-client',{
         //     name : QuizCreate.name,
