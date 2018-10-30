@@ -52,7 +52,7 @@ io.on('connection', function(socket){
 function startQuiz(quizId,socket){
 
 	socket.emit('quiz-client',{
-		    name : testQuiz.name,
+		    name : testQuiz.name+ quizId,
 		    // question : testQuiz.questions[0]
 		});
 }
