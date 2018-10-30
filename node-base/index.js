@@ -89,12 +89,12 @@ function startQuiz(quizId,socket){
 	});
 
 	socket.on("quiz-lobby-name", function(data){
-		console.log("here1");
 		if(quizId == data["quizId"]){
 			//sends data to quizClient. 
-			socket.emit()
-			console.log(data["name"]+ " joined quiz "+ data["quizId"]);
 			openQuizes[quizId].users.push(new User(data["name"]));
+			//Note: This socket sends to everything. So there is a check on the quiz client for quizId. 
+			io.emit("quiz-join-name", data);
+			console.log(data["name"]+ " joined quiz "+ data["quizId"]);
 		}
 	});
 

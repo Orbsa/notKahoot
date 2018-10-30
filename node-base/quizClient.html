@@ -72,17 +72,20 @@
         }
 
       });
+        // -------On Server-----------------  
+        //   io.emit('quiz-client',{
+        //     name : QuizCreate.name,
+        //     question : QuizCreate.questions[0]
+        // }); 
+        // This should be sent to a specific client.
+        // QuizCreate is a complete quiz object. 
 
-      socket.on("quiz-join-name", function(name){
-          addName(name);
+    socket.on("quiz-join-name", function(nameObj){
+        if(quizId == nameObj["quizId"]){
+            console.log(nameObj);
+            addName(nameObj["name"]);
+        }
       });
-    // -------On Server-----------------  
-    //   io.emit('quiz-client',{
-    //     name : QuizCreate.name,
-    //     question : QuizCreate.questions[0]
-    // }); 
-    // This should be sent to a specific client.
-    // QuizCreate is a complete quiz object. 
 
 
 
