@@ -10,7 +10,8 @@
     <h1 id="question-text"></h1>
     <div id="answeres" > 
         <h3 id="quiz-id">Log on with quiz id: </h3>
-        <button type="button" onclick="startQuiz()" > Start Quiz </button>
+        <button type="button" onclick="startQuiz()" > Start Quiz </button> <br>
+        <div id="people-in-quiz"></div>
     </div>
 	
 </body>
@@ -49,6 +50,13 @@
         }
     };
 
+    function addName(Name){
+        var lobbyEl = document.getElementById("people-in-quiz");
+        var nameSpan = document.createElement('span');
+        nameSpan.textContent = Name;
+        lobbyEl.appendChild(nameSpan);
+    }
+
     function startQuiz(){
         socket.emit('start', quizId);
     }
@@ -65,8 +73,8 @@
 
       });
 
-      socket.on("quiz-lobby-name", function(name){
-
+      socket.on("quiz-join-name", function(name){
+          addName(name);
       });
     // -------On Server-----------------  
     //   io.emit('quiz-client',{
