@@ -20,8 +20,10 @@
         window.location.href = "quizClient?quizId=" + index;
     }
 
-    function createList() {
-        //get quizzes from database
+    function createList() { 
+        let url = new URL(document.URL);
+        var user_id = url.searchParams.get("user_id");
+        //get quizzes from database based on userId
          var quizCount = 3;
         //set quizCount
         //quizCount = quiz.length()

@@ -21,7 +21,7 @@
 			alert("Username or password not entered");
 			return;
 		}
-
+            
 		/*
 		if (username != databaseUsername || password != databaseUsername){
 			alert("invalid username or password")
@@ -29,6 +29,9 @@
 		}
 	}
 		*/
+        // get userId from data base
+        var user_id = 1;
+        window.location.href = "proctorLanding?user_id=" + user_id;
 	}
 </script>
 </html>

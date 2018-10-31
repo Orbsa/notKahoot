@@ -25,6 +25,10 @@ app.get("/proctorLogin",function(req,res){
 	res.sendFile(__dirname + "/proctorLogin.html");
 })
 
+app.get("/registration",function(req,res){
+    res.sendFile(__dirname + "/registration.html");
+}
+
 app.get("/quizClient",function(req,res){
 	//Here we check to see if there is that quiz in the database. 
 	//For now we will just use the test quiz. 
