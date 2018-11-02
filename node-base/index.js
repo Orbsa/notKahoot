@@ -8,9 +8,6 @@ var User = require("./User.js");
 
 var openQuizes = [];
 
-app.use(express.static(__dirname + '/public'));
-
-
 app.get("/",function(req,res){
 	res.sendFile(__dirname + "/home.html");
 })
@@ -30,7 +27,7 @@ app.get("/proctorLogin",function(req,res){
 
 app.get("/registration",function(req,res){
     res.sendFile(__dirname + "/registration.html");
-}
+})
 
 app.get("/quizClient",function(req,res){
 	//Here we check to see if there is that quiz in the database. 
