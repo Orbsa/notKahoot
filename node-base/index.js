@@ -8,6 +8,9 @@ var User = require("./User.js");
 
 var openQuizes = [];
 
+app.use(express.static(__dirname + '/public'));
+
+
 app.get("/",function(req,res){
 	res.sendFile(__dirname + "/home.html");
 })
