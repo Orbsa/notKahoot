@@ -2,28 +2,25 @@
 <html>
 <head>
     <title> Not Kahoot </title>
-
 <script src="/socket.io/socket.io.js"></script>
 
-<body>
-   <form>
-        Registor as a proctor: <br>
-        Username: <input type="text" id="username"> <br>
-        Password: <input type="password" id="password1"> <br>
-        re-enter: <input type="password" id="password2"> <br>
 
-        <button type="button" onclick="submit();">Submit</button>
-   </form> 
    <script>
         var socket = io();
 
-        function submit() {
+        function save()
+        {
+           console.log('here');
            var username = document.getElementById('username');
            var password1 = document.getElementById('password1');
            var password2 = document.getElementById('password2');
-
+           
+           console.log('username: ',username);
+           console.log('password1: ', password1);
+           console.log('password2: ', password2);
            if (username == '' || password1 == '' || password2 == ''){
-               alert("please fill out all fields);
+               //alert("please fill out all fields);
+               console.log("please fill out");
            } 
 
            if (password1 != password2){
@@ -36,5 +33,12 @@
            window.location.href = "proctorLanding?user_id=" + user_id;
         }
    </script>
+<body>
+        Registor as a proctor: <br>
+        Username: <input type="text" id="username"> <br>
+        Password: <input type="password" id="password1"> <br>
+        re-enter: <input type="password" id="password2"> <br>
+
+        <button onclick="save()">Submit</button>
 </body>
 </html>
