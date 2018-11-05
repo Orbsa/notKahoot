@@ -1,0 +1,17 @@
+
+
+how to create a new model:
+
+node_modules/.bin/sequelize model:generate --name User --attributes firstName:string,lastName:string,email:string
+
+Once the model is created, we need to migrate and create the table. Do so by running: 
+
+node_modules/.bin/sequelize db:migrate
+
+seed, fill the database with test users/data create the seed file with:
+
+node_modules/.bin/sequelize seed:generate --name demo-user
+
+in order to fill the database, you need to run the seed with:
+
+node_modules/.bin/sequelize db:seed:all
