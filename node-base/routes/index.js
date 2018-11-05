@@ -83,14 +83,6 @@ module.exports = router;
 
 
 
-quiz:
-	question1:
-		answer1:
-		answer2:
-	quesiton2:
-		answer1:
-		answer2:
-
 
 
 

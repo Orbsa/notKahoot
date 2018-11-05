@@ -8,25 +8,27 @@ var User = require("./User.js");
 
 var openQuizes = [];
 
+console.log(testQuiz)
+
 app.get("/",function(req,res){
-	res.sendFile(__dirname + "/home.html");
+	res.sendFile(__dirname + "/views/home.html");
 })
 
 
 app.get("/editQuiz",function(req,res){
-	res.sendFile(__dirname + "/editQuiz.html");
+	res.sendFile(__dirname + "/views/editQuiz.html");
 })
 
 app.get("/createQuiz",function(req,res){
-	res.sendFile(__dirname + "/createQuiz.html");
+	res.sendFile(__dirname + "/views/createQuiz.html");
 })
 
 app.get("/proctorLogin",function(req,res){
-	res.sendFile(__dirname + "/proctorLogin.html");
+	res.sendFile(__dirname + "/views/proctorLogin.html");
 })
 
 app.get("/registration",function(req,res){
-    res.sendFile(__dirname + "/registration.html");
+    res.sendFile(__dirname + "/views/registration.html");
 })
 
 app.get("/quizClient",function(req,res){
@@ -36,7 +38,7 @@ app.get("/quizClient",function(req,res){
 	if(req.param('quizId')==3){
 		openQuizes[3] = testQuiz;
 		console.log("Loaded quiz: "+ testQuiz);
-		res.sendFile(__dirname + "/quizClient.html");
+		res.sendFile(__dirname + "/views/quizClient.html");
 	}
 	else{
 		res.send("There is no quiz with that id. Or the get request is incorrect.");
@@ -45,14 +47,14 @@ app.get("/quizClient",function(req,res){
 })
 
 app.get("/proctorLanding",function(req,res){
-    res.sendFile(__dirname + "/proctorLanding.html");
+    res.sendFile(__dirname + "/views/proctorLanding.html");
 })
 
 app.get("/userClient", function(req,res){
 	if(req.param('quizId') in openQuizes){
 		// openQuizes[req.param('quizId')] = testQuiz;
 		console.log("User wants to join quiz: "+ req.param('quizId'));
-		res.sendFile(__dirname + "/userclient.html");
+		res.sendFile(__dirname + "/views/userclient.html");
 	}else{
 		res.send("There is no open quiz with that id");
 	}
