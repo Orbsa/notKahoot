@@ -15,3 +15,23 @@ node_modules/.bin/sequelize seed:generate --name demo-user
 in order to fill the database, you need to run the seed with:
 
 node_modules/.bin/sequelize db:seed:all
+
+
+
+How to set up a new database on your system: 
+
+First set up the config.json according to your mysql set up. 
+
+Then go into mysql and create the database.
+
+        $ mysql -u root -p //Maybe run as root.
+
+        mysql> create database nodular;
+
+run these commands
+
+        npm install -s sequelize-cli
+        npm -s install sequelize-auto-migrations
+        node node_modules/sequelize-auto-migrations/bin/makemigration.js --name initMigrate
+        node node_modules/sequelize-auto-migrations/bin/runmigration.js
+        node node_modules/.bin/sequelize db:migrate --config config/config.json
