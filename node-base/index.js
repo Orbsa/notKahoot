@@ -6,6 +6,10 @@ var io = require('socket.io')(http);
 var testQuiz = require("./QuizCreationExample.js"); //This is just for testing. 
 var User = require("./User.js");
 
+var routes = require("./routes/index.js")
+app.use(routes)
+app.set('view engine', 'jade');
+
 var openQuizes = [];
 
 console.log(testQuiz)
