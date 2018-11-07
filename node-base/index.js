@@ -41,7 +41,7 @@ app.get("/quizClient",function(req,res){
 	//TODO: add a database check and load here. 
 	if(req.param('quizId')==3){
 		openQuizes[3] = testQuiz;
-		console.log("Loaded quiz: "+ testQuiz);
+		console.log("Loaded quiz: "+ testQuiz.name);
 		res.sendFile(__dirname + "/views/quizClient.html");
 	}
 	else{
@@ -72,7 +72,7 @@ io.on('connection', function(socket){
 		if (!(data in openQuizes)){
 			console.log("error: Something went wrong with loading quiz into quizClient.")
 		}
-		console.log("The quiz id: "+data);
+		console.log("Starting quiz id: "+data);
 		startQuiz(data,socket);
 	});
 

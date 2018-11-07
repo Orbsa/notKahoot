@@ -27,6 +27,7 @@ Then go into mysql and create the database.
         $ mysql -u root -p //Maybe run as root.
 
         mysql> create database nodular;
+	mysql> GRANT ALL PRIVILEGES ON nodular.* TO 'notkahoot'@'localhost' IDENTIFIED BY 'lolpass123';
 
 run these commands
 
