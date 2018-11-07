@@ -3,7 +3,7 @@ var router = express.Router();
 var models = require("../models");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/start', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
@@ -71,9 +71,27 @@ router.get('/question', function(req, res, next) {
 			});
 		});
 	}
+	else{
+		res.send("something went wrong.")
+	}
 })
 
 
 module.exports = router;
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> aa8de03162436a0fbeb7c919d8984254f9fbe9fc
