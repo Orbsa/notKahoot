@@ -14,17 +14,17 @@ module.export = {
 			return questions.length;
 		})
 
-	}
+	},
 
 	getEntireQuiz = function(qid) {
 		models.quiz.findAll({
-			where {
+			where: {
 				id: qid
 			}
 		}).then(quiz => {
 			
 		})
-	}
+	},
 
 	getQuizesForProctor = function(pid) {
 		models.quiz.findAll({
