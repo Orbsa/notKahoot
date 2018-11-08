@@ -53,9 +53,8 @@ router.get('/getdata', function(req, res, next) {
 });
 
 
-//TODO: finish this to give a nicer responce. 
 //Gives the question text and all answeres for a given question. 
-router.get('/question', function(req, res, next) {
+router.get('/queryQuestionAnswers', function(req, res, next) {
 	if(req.query.id != null){
 		models.question.findAll({
 			where: {
@@ -112,6 +111,7 @@ router.get('/queryQuiz', function(req, res, next) {
 	}
 })
 
+//Gives the questions text and id with a get req of quizId. 
 router.get('/queryQuizQuestions', function(req, res, next) {
 	if(req.query.id != null){
 		models.question.findAll({
@@ -127,6 +127,21 @@ router.get('/queryQuizQuestions', function(req, res, next) {
 	}
 })
 
+// //Give the Answere text for each answere with a questionId.
+// router.get('/queryQuestionAnswers',function(req,res,next){
+// 	if(req.query.id != null){
+// 		models.answer.findAll({
+// 			where: {
+// 				questionId: req.query.id
+// 			}
+// 		}).then(questions => {
+// 			res.json(questions);
+// 		});
+// 	}
+// 	else{
+// 		res.send("something went wrong.")//Just the Question text.
+// 	}
+// })
 
 
 module.exports = router;
