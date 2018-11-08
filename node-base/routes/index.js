@@ -52,6 +52,9 @@ router.get('/getdata', function(req, res, next) {
 	return models.answer.findAll().then(answers => res.json(answers));
 });
 
+
+//TODO: finish this to give a nicer responce. 
+//Gives the question text and all answeres for a given question. 
 router.get('/question', function(req, res, next) {
 	if(req.query.id != null){
 		models.question.findAll({
@@ -91,6 +94,39 @@ router.get('/quizzes', function(req, res, next) {
 		res.send("something went wrong.")
 	}
 })
+
+//Gives the quiz name with a get req of quizId. 
+router.get('/queryQuiz', function(req, res, next) {
+	if(req.query.id != null){
+		models.quiz.findAll({
+			where: {
+				id: req.query.id
+			}
+		}).then(quiz => {
+			 
+			res.json(quiz[0]);
+		});
+	}
+	else{
+		res.send("something went wrong.")
+	}
+})
+
+router.get('/queryQuizQuestions', function(req, res, next) {
+	if(req.query.id != null){
+		models.question.findAll({
+			where: {
+				quizId: req.query.id
+			}
+		}).then(questions => {
+			res.json(questions);
+		});
+	}
+	else{
+		res.send("something went wrong.")//Just the Question text.
+	}
+})
+
 
 
 module.exports = router;
