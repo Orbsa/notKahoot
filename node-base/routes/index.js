@@ -25,7 +25,7 @@ router.get('/test', function(req, res, next){
 			});
 		});
 
-		var quiz2 = models.quiz.create({'name': 'most disliked races'}).then(quiz => {
+		var quiz2 = models.quiz.create({'name': 'most disliked races',}).then(quiz => {
 			var question1 = models.question.create({'text': 'select your least favorite race', 'quizId': quiz.id}).then(question => {
 				var answer1 = models.answer.create({'text': 'russians', 'votes': 0, 'questionId':question.id});
 				var answer1 = models.answer.create({'text': 'slovenians', 'votes': 0, 'questionId':question.id});
@@ -76,22 +76,22 @@ router.get('/question', function(req, res, next) {
 	}
 })
 
+//Gives all the quizzes for a given proctorID.  Ex. /quizzes?id=<Procotors id> 
+router.get('/quizzes', function(req, res, next) {
+	if(req.query.id != null){
+		models.quiz.findAll({
+			where: {
+				proctorId: req.query.id
+			}
+		}).then(quizzes => {
+			res.json(quizzes)
+		});
+	}
+	else{
+		res.send("something went wrong.")
+	}
+})
+
 
 module.exports = router;
 
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> aa8de03162436a0fbeb7c919d8984254f9fbe9fc
