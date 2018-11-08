@@ -57,9 +57,23 @@
         lobbyEl.appendChild(nameSpan);
     }
 
-    function startQuiz(){
-        socket.emit('start', quizId);
-    }
+    var fetchQuizQuery = function(){
+        QuizURL = "/queryQuiz?="+quizId;
+		var req = new XMLHttpRequest();
+		req.open("GET", QuizURL);
+		req.responseType ='json';
+		req.onload = function(){
+			data = req.response;
+			console.log(data);
+		}
+		req.send();
+	}
+
+
+
+    /// function startQuiz(){
+    ///     socket.emit('start', quizId);
+    /// }
 
     //need: quizName, quizQuestion, quizAnswers
     /*This is for recieving quiz information*/
@@ -90,7 +104,7 @@
 
 
 
-    socket.emit('start-quiz',quizId);
+    // socket.emit('start-quiz',quizId);
 
 
 
