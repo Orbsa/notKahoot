@@ -16,7 +16,9 @@
 	
 </body>
 <script>
-
+    var quizName;
+    var quizQuestions=[];//These should contain the answeres. After calling the fetchAnsweres function.  
+    var quizId;
 
     //---Gathering the quiz ID out of the url. 
     let url = new URL(document.URL);
@@ -57,17 +59,38 @@
         lobbyEl.appendChild(nameSpan);
     }
 
-    var fetchQuizQuery = function(){
-        QuizURL = "/queryQuiz?="+quizId;
+    function fetchQuizNameQuery(){
+        QuizURL = "/queryQuiz?id="+quizId;//Quiz id should be accessed by get request. 
 		var req = new XMLHttpRequest();
 		req.open("GET", QuizURL);
 		req.responseType ='json';
 		req.onload = function(){
-			data = req.response;
-			console.log(data);
+            data = req.response;
+            quizName=data.name;
 		}
 		req.send();
-	}
+    }
+    
+    function fetchQuizQuestionsQuery(){
+        QuestionsURL = "/queryQuizQuestionsAndAnswers?id="+quizId;//Quiz id should be accessed by get request. 
+		var req = new XMLHttpRequest();
+		req.open("GET", QuestionsURL);
+		req.responseType ='json';
+		req.onload = function(){
+            data = req.response;
+            // quizName=data.name;
+            // console.log(data);
+            for( i in data){
+                quizQuestions.push(data[i]); //Create the question obj
+            }
+		}
+		req.send();
+    }
+
+
+  
+
+
 
 
 
