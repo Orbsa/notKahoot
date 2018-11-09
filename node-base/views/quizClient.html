@@ -16,8 +16,8 @@
 	
 </body>
 <script>
-    var quizName;
-    var quizQuestions=[];//These should contain the answeres. After calling the fetchAnsweres function.  
+    var quizName; //This is set by running fetchQuizTitle
+    var quizQuestions=[];//These should contain the answeres. After calling the fetchQuestionText function.  
     var quizId;
 
     //---Gathering the quiz ID out of the url. 
@@ -60,31 +60,42 @@
     }
 
     function fetchQuizNameQuery(){
-        QuizURL = "/queryQuiz?id="+quizId;//Quiz id should be accessed by get request. 
-		var req = new XMLHttpRequest();
-		req.open("GET", QuizURL);
-		req.responseType ='json';
-		req.onload = function(){
-            data = req.response;
-            quizName=data.name;
-		}
-		req.send();
+        return new Promise(function(resolve,reject){
+            QuizURL = "/queryQuiz?id="+quizId;//Quiz id should be accessed by get request. 
+            var req = new XMLHttpRequest();
+            req.open("GET", QuizURL);
+            req.responseType ='json';
+            req.onload = function(){
+                data = req.response;
+                quizName=data.name;
+                setQuizTitle(quizName); //Sets the name of the quiz when the name is recieved. 
+                resolve("retrieve the name");
+            }
+            req.send();
+
+        })
     }
+
     
     function fetchQuizQuestionsQuery(){
-        QuestionsURL = "/queryQuizQuestionsAndAnswers?id="+quizId;//Quiz id should be accessed by get request. 
-		var req = new XMLHttpRequest();
-		req.open("GET", QuestionsURL);
-		req.responseType ='json';
-		req.onload = function(){
-            data = req.response;
-            // quizName=data.name;
-            // console.log(data);
-            for( i in data){
-                quizQuestions.push(data[i]); //Create the question obj
+        return new Promise(function(resolve,reject){
+            QuestionsURL = "/queryQuizQuestionsAndAnswers?id="+quizId;//Quiz id should be accessed by get request. 
+            var req = new XMLHttpRequest();
+            req.open("GET", QuestionsURL);
+            req.responseType ='json';
+            req.onload = function(){
+                data = req.response;
+                // quizName=data.name;
+                // console.log(data);
+                for( i in data){
+                    quizQuestions.push(data[i]); //Create the question obj
+                }
+                resolve("retrieve the questions and answers.");
+
             }
-		}
-		req.send();
+            req.send();
+
+        })
     }
 
 
@@ -129,6 +140,16 @@
 
     // socket.emit('start-quiz',quizId);
 
+
+function onLoad(){
+    fetchQuizNameQuery().then(val=>{
+        console.log(val);
+    });
+    fetchQuizQuestionsQuery().then(val=>{
+        console.log(val);
+    });
+}
+onLoad();
 
 
 </script>
