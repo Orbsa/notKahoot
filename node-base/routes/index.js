@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var models = require("../models");
+var Sequelize = require("sequelize");
 
 /* GET home page. */
 router.get('/start', function(req, res, next) {
@@ -127,21 +128,51 @@ router.get('/queryQuizQuestions', function(req, res, next) {
 	}
 })
 
-// //Give the Answere text for each answere with a questionId.
-// router.get('/queryQuestionAnswers',function(req,res,next){
-// 	if(req.query.id != null){
-// 		models.answer.findAll({
-// 			where: {
-// 				questionId: req.query.id
-// 			}
-// 		}).then(questions => {
-// 			res.json(questions);
-// 		});
-// 	}
-// 	else{
-// 		res.send("something went wrong.")//Just the Question text.
-// 	}
-// })
+
+//Give the answers for and entire quiz with a get req of quizID
+router.get('/queryQuizQuestionsAndAnswers', function(req, res, next) {
+	if(req.query.id != null){
+		const Op = Sequelize.Op;
+		models.question.findAll({
+			where: {
+				quizId: req.query.id
+			}
+		}).then(questions => {
+			// res.json(questions);
+			questionIds=[];
+			for( i in questions){
+				questions[i].dataValues.answers=[];//initialize a list of answers. 
+				questionIds.push(questions[i].dataValues.id);//Puts the ids in the questionIds list
+			}
+			models.answer.findAll({
+				where:{
+					questionId: {
+						[Op.or]: questionIds
+					  }
+				}
+			}).then(answers=>{
+				console.log(answers);
+				// res.json(answers);
+				for( i in questions){
+					for( j in answers){
+						if(questions[i].dataValues.id == answers[j].dataValues.questionId){
+							questions[i].dataValues.answers.push(answers[j]);
+						}
+					}
+				}
+				console.log(questions);
+				res.json(questions);
+			})
+
+
+
+		});
+	}
+	else{
+		res.send("something went wrong.")//Just the Question text.
+	}
+})
+
 
 
 module.exports = router;
