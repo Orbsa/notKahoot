@@ -67,14 +67,30 @@ io.on('connection', function(socket){
 		openQuizes[data.quizId]=quizUnpacker(data);
 		openQuizes[data.quizId]["proctorSocketId"] = socket.id;
 		openQuizes[data.quizId]["userSocketIds"]=[];
-		console.log(openQuizes[data.quizId]);
+		// console.log(openQuizes[data.quizId]);
 		console.log("Starting quiz id: "+data.quizId);
 		// startQuiz(openQuizes[data.quizId]);
 	});
 
-	// socket.on('start-quiz',{
+	socket.on('start-quiz',function(data){
+		console.log(data);
 
-	// })
+		//Sending data to proctor
+		io.sockets.connected[openQuizes[data.quizId].proctorSocketId].emit('quiz-client',{
+			"name": openQuizes[data.quizId].name,
+			"question": openQuizes[data.quizId].questions[0]
+		});
+
+		//Sending data to all the UserClients. 
+		for (i in openQuizes[data.quizId].userSocketIds){
+			io.sockets.connected[openQuizes[data.quizId].userSocketIds[i]].emit('quiz-client',{
+				"name": openQuizes[data.quizId].name,
+				"question": openQuizes[data.quizId].questions[0]
+			});
+		};
+
+
+	})
 
 	socket.on("quiz-lobby-join", function(data){
 			if (openQuizes.hasOwnProperty(data.quizId)){
@@ -91,9 +107,7 @@ io.on('connection', function(socket){
 	});
 });
 
-// console.log(testQuiz);;
 //The purpose of this function is to recieve a quiz from the quiz Client and unpack the info into a nicer quiz obj. 
-
 function quizUnpacker(box){
 	newQuiz = new Quiz.quiz(box.quizName)
 	// console.log(box);
@@ -104,8 +118,7 @@ function quizUnpacker(box){
 		}
 		newQuiz.questions.push(question);
 	}
-	// console.log(newQuiz);
-	// console.log(newQuiz.questions[1].answers);
+
 	return newQuiz;
 }
 
