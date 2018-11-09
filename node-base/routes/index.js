@@ -63,7 +63,7 @@ router.get('/queryQuestionAnswers', function(req, res, next) {
 			}
 		}).then(question => {
 			var question = question[0];
-			console.log(question);
+			// console.log(question);
 			models.answer.findAll({
 				where: {
 					questionId: question.dataValues.id
@@ -151,7 +151,7 @@ router.get('/queryQuizQuestionsAndAnswers', function(req, res, next) {
 					  }
 				}
 			}).then(answers=>{
-				console.log(answers);
+				// console.log(answers);
 				// res.json(answers);
 				for( i in questions){
 					for( j in answers){
@@ -160,7 +160,7 @@ router.get('/queryQuizQuestionsAndAnswers', function(req, res, next) {
 						}
 					}
 				}
-				console.log(questions);
+				// console.log(questions);
 				res.json(questions);
 			})
 

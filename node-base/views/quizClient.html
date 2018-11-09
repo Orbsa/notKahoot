@@ -138,7 +138,6 @@
 
 
 
-    // socket.emit('start-quiz',quizId);
 
 
 function onLoad(){
@@ -147,6 +146,7 @@ function onLoad(){
     });
     fetchQuizQuestionsQuery().then(val=>{
         console.log(val);
+        socket.emit('initialize-quiz',{"quizId":quizId,"quizName":quizName,"quizQuestions":quizQuestions});
     });
 }
 onLoad();
