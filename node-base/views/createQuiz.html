@@ -14,12 +14,14 @@
         <br>
 
     </dif>
-    <button onclick="submit();">Submit</button>
+    <button type="button" onclick="sendFormAsJson();">Submit</button>
 </form> 
 </body>
 <script>   
     questionId=0;
     questionElements=[];
+    //Takes a questionID and is a list of answer Elements.
+    AnswerElsToQuestions=[];
     AnswerAmounts=[];
 
     function addQuestion(){
@@ -33,6 +35,7 @@
 
         //add the question element to the questionsDif
         questionElements.push(question);
+        AnswerElsToQuestions[questionId]=[];//make the answers array. 
         questionsDif.appendChild(question);
         
         //Add a button for adding answers. 
@@ -63,14 +66,47 @@
 
         //create the Answer Element
         var Answer = document.createElement("input");
-        Answer.setAttribute('id',answerId+"answerOfQuestion"+questionId); //may become mixed on the post request. 
-        Answer.setAttribute('name',answerId+"answerOfQuestion"+questionId);
+        Answer.setAttribute('id',answerId+"answerOfQuestion"+ID); //may become mixed on the post request. 
+        Answer.setAttribute('name',answerId+"answerOfQuestion"+ID);
         Answer.setAttribute('placeholder',"text of answer "+answerId);
         Answer.setAttribute('type',"text");
         answerDif.appendChild(Answer);
         
+        AnswerElsToQuestions[ID][answerId]=Answer;
+
         AnswerAmounts[ID]++;
     }
+
+
+    //TODO: finish and fix this
+    function sendFormAsJson(){
+        obj = {}; //Create base obj
+        //get the name of the quiz
+        var quizNameEl = document.getElementById('quiz-name');
+        obj.quizName = quizNameEl.value;
+
+        //get the questions
+        obj.questions=[];
+        for( i in questionElements){
+            obj.questions[i]={}
+            obj.questions[i].questionText = questionElements[i].value;
+            //Get the answers for each question. 
+            obj.questions[i].answersText=[];
+            for( j in AnswerElsToQuestions[i]){
+                obj.questions[i].answersText.push(AnswerElsToQuestions[i][j].value);
+            }
+        }
+            console.log(JSON.stringify(obj));
+
+        var xmlRec = new XMLHttpRequest();
+        xmlRec.open("POST", '/createQuizInDB', true);
+        xmlRec.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xmlRec.onload = function(){
+            console.log("The post request has been sent");
+        }
+        // xmlRec.send(obj);//Json Sent here
+    }
+
 
     var socket = io();
 
