@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> Not KaHoot </title>
+<title>Edit Quizzes</title>
 </head>
 <script src="/socket.io/socket.io.js"></script>
 
 <body onload="getQuizInfo()">
 
-    Name of Quiz:<input type="text" id="quiz-name" value="quiz.name"><br>
+    Name of Quiz:<input type="text" id="quiz-name" value="quiz probably wasn't found"><br>
     <button onclick="addQuestion()">Add a question!</button>
     <dif id="questions">
         <br>
@@ -17,25 +17,49 @@
         
 </body>
 <script>   
+    //todo add answers to questions and push input to database
     var url = new URL(document.URL);
     var quiz_id = url.searchParams.get("quiz_id"); 
     console.log('quiz_id in createQuiz ' + quiz_id);
     
+   
     questionElements=[];
     quizCount = 0;
     function getQuizInfo() {
+        var questions;
+        var quiz;
         //get quiz from database with quiz id
-        quizCount = 3
-        for(var i = 0; i < quizCount; i++){
-            var questionsDif = document.getElementById('questions');
-            var question = document.createElement("input");         
-            question.setAttribute('id',"question-"+"quiz.questin_id");   
-            question.setAttribute('value',"quiz.question");
-            questionElements.push(question);
-            questionsDif.appendChild(question);
-            questionsDif.appendChild(document.createElement("br"));
-        }
+        var questionReq = new XMLHttpRequest();
+        questionReq.open("GET", "/queryQuizQuestions?id="+quiz_id);
+        questionReq.responeType = 'json';
+        questionReq.onload = function(){
+            questions = JSON.parse(questionReq.response);
 
+            console.log('questions: ',questions);
+            console.log('length: ',questions.length);
+            console.log('questions[0]: ',questions[0]);
+            for(var i = 0; i < questions.length; i++){
+                var questionsDif = document.getElementById('questions');
+                var question = document.createElement("input");         
+                question.setAttribute('id',"question-"+questions[i].id);   
+                question.setAttribute('value',questions[i].text);
+                questionElements.push(question);
+                questionsDif.appendChild(question);
+                questionsDif.appendChild(document.createElement("br"));
+            }
+        };
+        questionReq.send();
+        
+        var quizReq = new XMLHttpRequest();
+        quizReq.open("GET", "/queryQuiz?id="+quiz_id);
+        quizReq.responseType = 'json';
+        quizReq.onload = function(){
+            quiz = quizReq.response;
+            console.log('quiz:', quiz['name']);
+            var inputTag = document.getElementById('quiz-name');
+            inputTag.setAttribute('value',quiz['name']);
+        }
+        quizReq.send();
     }
     
     questionId=quizCount + 1;

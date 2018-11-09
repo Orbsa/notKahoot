@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title> Not Kahoot </title>
+    <title>Proctor Landing</title>
 </head>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -24,45 +24,57 @@
         let url = new URL(document.URL);
         var user_id = url.searchParams.get("user_id");
         //get quizzes from database based on userId
-         var quizCount = 3;
-        //set quizCount
-        //quizCount = quiz.length()
+        
+        var proctor_id = 1
+        var rq = new XMLHttpRequest();
+        rq.open("GET", 'queryQuiz?id='+proctor_id,true);
+        rq.responseType = 'json';
+        rq.onload = function(){
+            quizzes = rq.response;
+            console.log(quizzes);
 
-        var quizList = document.createElement("TABLE");
-        quizList.setAttribute("id","quizTable");
-        document.body.appendChild(quizList);
-
-        for(var i = 0; i < quizCount; i++){
-            var row = document.createElement("TR");
-            row.setAttribute("id","row" + i);
-            document.getElementById("quizTable").appendChild(row);
+            var quizList = document.createElement("TABLE");
+            quizList.setAttribute("id","quizTable");
+            document.body.appendChild(quizList);
+            
+            //I don't think the get queryQuiz is going to get all the quizzes
+            var quizCount = 1;
+            console.log(quizzes.length);
+            for(var i = 0; i < quizCount; i++){
+                var row = document.createElement("TR");
+                row.setAttribute("id","row" + i);
+                document.getElementById("quizTable").appendChild(row);
         
 
-            var cell = document.createElement("TD"); 
-            //change to quiz.name here
-            var quizName = document.createTextNode("quiz.name");
-            cell.appendChild(quizName);
-            var butt1 = document.createElement("BUTTON");
-            //need to add link in button
-            butt1.setAttribute("onclick", editQuiz);
-            butt1.onclick = function(){editQuiz(i)};
-            butt1.innerHTML = 'edit';
-            var butt2 = document.createElement("BUTTON");
-            //need to add link in button
-            butt2.setAttribute("onclick", deleteQuiz);
-            butt2.onclick = function(){deleteQuiz(i)};
-            butt2.innerHTML = 'delete';
-            var butt3 = document.createElement("BUTTON");
-            //need to add link in button
-            butt3.setAttribute("onclick", startQuiz);
-            butt3.onclick = function(){startQuiz(i)};
-            butt3.innerHTML = 'start';
+                var cell = document.createElement("TD"); 
+                cell.setAttribute('id','cell'+i)
+                //change to quiz.name here
+                var quizName = document.createTextNode(quizzes.name);
+                cell.appendChild(quizName);
+                var butt1 = document.createElement("BUTTON");
+                //need to add link in button
+                butt1.setAttribute("onclick", editQuiz);
+                butt1.onclick = function(){editQuiz(i)};
+                butt1.innerHTML = 'edit';
+                var butt2 = document.createElement("BUTTON");
+                //need to add link in button
+                butt2.setAttribute("onclick", deleteQuiz);
+                butt2.onclick = function(){deleteQuiz(i)};
+                butt2.innerHTML = 'delete';
+                var butt3 = document.createElement("BUTTON");
+                //need to add link in button
+                butt3.setAttribute("onclick", startQuiz);
+                butt3.onclick = function(){startQuiz(i)};
+                butt3.innerHTML = 'start';
 
-            document.getElementById("row" + i).append(cell);
-            document.getElementById("row" + i).append(butt1);
-            document.getElementById("row" + i).append(butt2);
-            document.getElementById("row" + i).append(butt3);
+                document.getElementById("row" + i).append(cell);
+                document.getElementById("cell" + i).append(butt1);
+                document.getElementById("cell" + i).append(butt2);
+                document.getElementById("cell" + i).append(butt3);
         }    
+        }
+        rq.send();
+
     }
 </script>
     <a href="createQuiz" class="btn">Create new</a>
