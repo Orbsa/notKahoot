@@ -7,8 +7,8 @@
 
 <body>
 
-    <form>
-    Name of Quiz:<input name="name-of-quiz" type="text" id="quiz-name"><br>
+    <form action="/createQuizInDB" method="post">
+    Name of Quiz:<input name="nameOfQuiz" type="text" id="quiz-name"><br>
     <button type="button" onclick="addQuestion()">Add a question!</button>
     <dif id="questions">
         <br>
@@ -26,10 +26,11 @@
         var questionsDif = document.getElementById('questions');
         //create question element
         var question = document.createElement("input");
-        question.setAttribute('id',"question-"+questionId);
-        question.setAttribute('name',"question-"+questionId);
-        question.setAttribute('placeholder',"text of question-"+questionId);
+        question.setAttribute('id',"question"+questionId);
+        question.setAttribute('name',"question"+questionId);
+        question.setAttribute('placeholder',"text of question "+questionId);
         question.setAttribute('type',"text");
+
         //add the question element to the questionsDif
         questionElements.push(question);
         questionsDif.appendChild(question);
@@ -43,7 +44,7 @@
         
         //Create div for Answers
         var answersDiv = document.createElement("div");
-        answersDiv.setAttribute("id","answers-question-"+questionId);
+        answersDiv.setAttribute("id","answersOfQuestion"+questionId);
         questionsDif.appendChild(answersDiv);
         AnswerAmounts[questionId]=0;
 
@@ -58,12 +59,12 @@
         answerId = AnswerAmounts[ID];
         
         //get the answer dif according to ID. 
-        var answerDif = document.getElementById("answers-question-"+ID);
+        var answerDif = document.getElementById("answersOfQuestion"+ID);
 
         //create the Answer Element
         var Answer = document.createElement("input");
-        Answer.setAttribute('id',"answer-question-"+ID); //may become mixed on the post request. 
-        Answer.setAttribute('name',answerId+"-answer-of-question-"+questionId);
+        Answer.setAttribute('id',answerId+"answerOfQuestion"+questionId); //may become mixed on the post request. 
+        Answer.setAttribute('name',answerId+"answerOfQuestion"+questionId);
         Answer.setAttribute('placeholder',"text of answer "+answerId);
         Answer.setAttribute('type',"text");
         answerDif.appendChild(Answer);
