@@ -98,22 +98,15 @@
         })
     }
 
-
-  
-
-
-
-
-
-    /// function startQuiz(){
-    ///     socket.emit('start', quizId);
-    /// }
+    function startQuiz(){
+        socket.emit('start-quiz', {'quizId': quizId});
+    }
 
     //need: quizName, quizQuestion, quizAnswers
     /*This is for recieving quiz information*/
     socket.on('quiz-client',function(QuizCreate){
         console.log(QuizCreate);
-        setQuizTitle(QuizCreate.name);
+        // setQuizTitle(QuizCreate.name);
         if('question' in QuizCreate){
             setQuestionText(QuizCreate.question.text);
             setAnswers(QuizCreate.question.answers);

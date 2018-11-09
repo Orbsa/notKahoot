@@ -5,14 +5,15 @@ var http = require("http").Server(app);
 var io = require('socket.io')(http);
 var testQuiz = require("./QuizCreationExample.js"); //This is just for testing. 
 var User = require("./User.js");
+var Quiz = require("./Quiz.js");
+var Question = require("./Question.js");
+var Answer = require("./Answer.js");
 
 var routes = require("./routes/index.js")
 app.use(routes)
 app.set('view engine', 'jade');
 
 var openQuizes = [];
-
-console.log(testQuiz)
 
 app.get("/",function(req,res){
 	res.sendFile(__dirname + "/views/home.html");
@@ -63,13 +64,33 @@ io.on('connection', function(socket){
 	socket.on('initialize-quiz' ,function(data){
 		// console.log(data);
 		//data's obj is like { quizId: '3',quizName: 'how to kill a man', quizQuestions: ...}
-		openQuizes[data.quizId]=data;
+		openQuizes[data.quizId]=quizUnpacker(data);
 		openQuizes[data.quizId]["proctorSocketId"] = socket.id;
 		openQuizes[data.quizId]["userSocketIds"]=[];
-		console.log(openQuizes[data.quizId]);
+		// console.log(openQuizes[data.quizId]);
 		console.log("Starting quiz id: "+data.quizId);
 		// startQuiz(openQuizes[data.quizId]);
 	});
+
+	socket.on('start-quiz',function(data){
+		console.log(data);
+
+		//Sending data to proctor
+		io.sockets.connected[openQuizes[data.quizId].proctorSocketId].emit('quiz-client',{
+			"name": openQuizes[data.quizId].name,
+			"question": openQuizes[data.quizId].questions[0]
+		});
+
+		//Sending data to all the UserClients. 
+		for (i in openQuizes[data.quizId].userSocketIds){
+			io.sockets.connected[openQuizes[data.quizId].userSocketIds[i]].emit('quiz-client',{
+				"name": openQuizes[data.quizId].name,
+				"question": openQuizes[data.quizId].questions[0]
+			});
+		};
+
+
+	})
 
 	socket.on("quiz-lobby-join", function(data){
 			if (openQuizes.hasOwnProperty(data.quizId)){
@@ -86,5 +107,19 @@ io.on('connection', function(socket){
 	});
 });
 
+//The purpose of this function is to recieve a quiz from the quiz Client and unpack the info into a nicer quiz obj. 
+function quizUnpacker(box){
+	newQuiz = new Quiz.quiz(box.quizName)
+	// console.log(box);
+	for( i in box.quizQuestions ){
+		question = new Question(box.quizQuestions[i].text);
+		for( j in box.quizQuestions[i].answers){
+			question.answers.push(new Answer(box.quizQuestions[i].answers[j].text))
+		}
+		newQuiz.questions.push(question);
+	}
+
+	return newQuiz;
+}
 
 http.listen(3450, ()=>console.log("Server at Localhost:3450"));
