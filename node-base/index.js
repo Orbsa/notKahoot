@@ -73,7 +73,7 @@ io.on('connection', function(socket){
 
 	socket.on("quiz-lobby-join", function(data){
 			if (openQuizes.hasOwnProperty(data.quizId)){
-				openQuizes[data.quizId].userSocketIds.push(socket.id)
+				openQuizes[data.quizId].userSocketIds.push(socket.id) //Note this may be a good place to gather names for the quiz as well. 
 				io.sockets.connected[openQuizes[data.quizId].proctorSocketId].emit("quiz-join-name", data);
 				console.log("A user joined quiz "+data.quizId+" as "+data.name);
 				// console.log(openQuizes[data.quizId]);

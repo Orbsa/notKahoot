@@ -17,6 +17,8 @@
 </body>
 <script>
 
+    var quizName; //This is set by running fetchQuizTitle
+
 
     //Gathering the quiz ID out of the url. 
     let url = new URL(document.URL);
@@ -49,6 +51,22 @@
         }
     };
 
+    function fetchQuizNameQuery(){
+        return new Promise(function(resolve,reject){
+            QuizURL = "/queryQuiz?id="+quizId;//Quiz id should be accessed by get request. 
+            var req = new XMLHttpRequest();
+            req.open("GET", QuizURL);
+            req.responseType ='json';
+            req.onload = function(){
+                data = req.response;
+                quizName=data.name;
+                setQuizTitle(quizName); //Sets the name of the quiz when the name is recieved. 
+                resolve("retrieve the name");
+            }
+            req.send();
+
+        })
+    }
 
     function sendName(){
         var nameEl = document.getElementById("user-name");
@@ -89,7 +107,13 @@
 
     socket.emit('start-quiz',quizId);
 
-
+function onLoad(){
+    fetchQuizNameQuery().then(val=>{
+        console.log(val);
+    });
+    
+}
+onLoad();
 
 </script>
 </html>
