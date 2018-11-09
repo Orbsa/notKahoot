@@ -59,7 +59,7 @@
             userName = nameEl.value;
             //This sends the name to the server. 
             console.log("Sending to server: "+ {"quizId": quizId, "name": nameEl.value});
-            socket.emit("quiz-lobby-name",{"quizId": quizId, "name": nameEl.value});
+            socket.emit("quiz-lobby-join",{"quizId": quizId, "name": nameEl.value});
             var answeresDiv = document.getElementById("answeres");
             answeresDiv.innerHTML = "Waiting for quiz to start.";}
     }

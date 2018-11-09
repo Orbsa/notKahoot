@@ -65,44 +65,26 @@ io.on('connection', function(socket){
 		//data's obj is like { quizId: '3',quizName: 'how to kill a man', quizQuestions: ...}
 		openQuizes[data.quizId]=data;
 		openQuizes[data.quizId]["proctorSocketId"] = socket.id;
+		openQuizes[data.quizId]["userSocketIds"]=[];
 		console.log(openQuizes[data.quizId]);
 		console.log("Starting quiz id: "+data.quizId);
-		startQuiz(openQuizes[data.quizId]);
+		// startQuiz(openQuizes[data.quizId]);
 	});
 
+	socket.on("quiz-lobby-join", function(data){
+			if (openQuizes.hasOwnProperty(data.quizId)){
+				openQuizes[data.quizId].userSocketIds.push(socket.id)
+				io.sockets.connected[openQuizes[data.quizId].proctorSocketId].emit("quiz-join-name", data);
+				console.log("A user joined quiz "+data.quizId+" as "+data.name);
+				// console.log(openQuizes[data.quizId]);
+			}
+		
+	});
+	
 	socket.on('disconnect', function(){
 		console.log('user left');
 	});
 });
 
-
-//Function for the protocol of a quiz. 
-function startQuiz(quizObj){
-	console.log("here I am");
-	// socket.emit('quiz-client',{
-	// 		name : openQuizes[quizId].name,
-	// 	    // question : testQuiz.questions[0]
-	// 	});
-
-	/// socket.on('start', function(){
-	/// 	socket.emit('quiz-client',{
-	/// 	    name : testQuiz.name+ quizId,
-	/// 	    question : testQuiz.questions[0]
-	///	});
-	///});
-
-	// quizObj.proctorSocketId.on("quiz-lobby-name", function(data){
-	// 	if(quizId == data["quizId"]){
-	// 		openQuizes[quizId].users.push(new User(data["name"]));
-	// 		//Note: This socket sends to everything. So there is a check on the quiz client for quizId. 
-	// 		io.emit("quiz-join-name", data);
-	// 		console.log(data["name"]+ " joined quiz "+ data["quizId"]);
-	// 	}
-	// });
-
-
-}
-
-// console.log(testQuiz.name);
 
 http.listen(3450, ()=>console.log("Server at Localhost:3450"));
