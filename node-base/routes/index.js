@@ -3,10 +3,20 @@ var router = express.Router();
 var models = require("../models");
 var Sequelize = require("sequelize");
 
+var bodyParser= require("body-parser");
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
 /* GET home page. */
 router.get('/start', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
+router.post("/createQuizInDB",function(req,res){
+	console.log(req.body);
+	console.log(req.body.questions[0]);
+	res.send("Hope this works.")
+})
 
 router.get('/test', function(req, res, next){
 	var proctor = models.proctor.create({'username':'suckmynuts', "quizScore": 69}).then(proctor => {

@@ -13,18 +13,6 @@ var routes = require("./routes/index.js")
 app.use(routes)
 app.set('view engine', 'jade');
 
-var bodyParser= require("body-parser");
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-
-app.post("/createQuizInDB",function(req,res){
-	console.log(req.body);
-	console.log(req.body.questions[0]);
-	res.send("Hope this works.")
-})
-
-
 var openQuizes = [];
 
 app.get("/",function(req,res){
