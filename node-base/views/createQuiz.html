@@ -96,15 +96,16 @@
                 obj.questions[i].answersText.push(AnswerElsToQuestions[i][j].value);
             }
         }
-            console.log(JSON.stringify(obj));
+            // console.log(JSON.stringify(obj));
 
         var xmlRec = new XMLHttpRequest();
         xmlRec.open("POST", '/createQuizInDB', true);
-        xmlRec.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xmlRec.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xmlRec.onload = function(){
             console.log("The post request has been sent");
         }
-        // xmlRec.send(obj);//Json Sent here
+        xmlRec.send(JSON.stringify(obj));//Json Sent here
+        console.log(JSON.stringify(obj));
     }
 
 

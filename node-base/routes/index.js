@@ -64,6 +64,7 @@ router.get('/queryQuestionAnswers', function(req, res, next) {
 		}).then(question => {
 			var question = question[0];
 			// console.log(question);
+
 			models.answer.findAll({
 				where: {
 					questionId: question.dataValues.id
@@ -76,7 +77,7 @@ router.get('/queryQuestionAnswers', function(req, res, next) {
 	}
 	else{
 		res.send("something went wrong.")
-	}
+	 }
 })
 
 //Gives all the quizzes for a given proctorID.  Ex. /quizzes?id=<Procotors id> 
