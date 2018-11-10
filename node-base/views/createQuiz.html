@@ -112,9 +112,11 @@
         xmlRec.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xmlRec.onload = function(){
             console.log("The post request has been sent");
+            window.location.href = "proctorLanding?proctor_id=" + proctor_id;
         }
         xmlRec.send(JSON.stringify(obj));//Json Sent here
         console.log(JSON.stringify(obj));
+
     }
 
 
