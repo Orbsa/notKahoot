@@ -12,6 +12,7 @@ router.get('/start', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+//TODO:Take the req.body and put it in the database. 
 router.post("/createQuizInDB",function(req,res){
 	console.log(req.body);
 	console.log(req.body.questions[0]);

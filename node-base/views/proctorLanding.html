@@ -9,6 +9,11 @@
 <body onload="createList()">
     
 <script>
+    var proctor_id; //Should be set when the database is queried.
+
+    function createQuiz(index){
+        window.location.href = "createQuiz?proctor_id=" + proctor_id;
+    }
     function editQuiz(index){
         window.location.href = "editQuiz?quiz_id=" + index;
     }
@@ -25,7 +30,7 @@
         var user_id = url.searchParams.get("user_id");
         //get quizzes from database based on userId
         
-        var proctor_id = 1
+        proctor_id = 1 //This need to be change to whatever the real proctor id is. 
         var rq = new XMLHttpRequest();
         rq.open("GET", 'queryQuiz?id='+proctor_id,true);
         rq.responseType = 'json';
@@ -77,7 +82,7 @@
 
     }
 </script>
-    <a href="createQuiz" class="btn">Create new</a>
+    <button onclick="createQuiz()" class="btn">Create new</button>
 </body>
 
 </html>
