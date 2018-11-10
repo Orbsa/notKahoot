@@ -24,6 +24,11 @@
     AnswerElsToQuestions=[];
     AnswerAmounts=[];
 
+    //Grabing the proctorid from get request. 
+    let url = new URL(document.URL);
+    var proctor_id = url.searchParams.get("proctor_id");
+    // console.log(proctor_id);
+
     function addQuestion(){
         var questionsDif = document.getElementById('questions');
         //create question element
@@ -81,6 +86,10 @@
     //TODO: finish and fix this
     function sendFormAsJson(){
         obj = {}; //Create base obj
+
+        //setProctorId
+        obj.proctorId=proctor_id;
+
         //get the name of the quiz
         var quizNameEl = document.getElementById('quiz-name');
         obj.quizName = quizNameEl.value;
