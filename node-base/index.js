@@ -11,7 +11,7 @@ var Answer = require("./Answer.js");
 
 var routes = require("./routes/index.js")
 app.use(routes)
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 var openQuizes = [];
 
