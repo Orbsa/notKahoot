@@ -4,16 +4,25 @@ head
 script(src='/socket.io/socket.io.js')
 h2#quiz-name Quiz name
 #Login
-    h3#quiz-id Log on with quiz id: 
-    button(type='button', onclick='startQuiz()')  Start Quiz 
-#Answers(type='none')
-    h3#question-title
-    - let answers= ["Test Answer 1", "Test Answer 2", "Test Anser 3"];
-    each n, i in answers;
-        p(id="answer_id_"+i)= n
+    if loggedIn
+        if sentName
+            #Answers(type='none')
+                h3#question-title
+                // Testing pug's for loops 
+                // - let answers= ["Test Answer 1", "Test Answer 2", "Test Anser 3"];
+                each n, i in answers
+                    p(id="answer_id_"+i)= n
+        else
+            input#username 
+            button(onclick='sendName()') Start
+    else
+        h3#quiz-id Log on with quiz id: 
+        button(onclick='startQuiz()')  Start Quiz 
     
 
 script.
+    var loggedIn= false;
+    var sentName= false;
     var quizName; //This is set by running fetchQuizTitle
     var quizQuestions=[];//These should contain the answers. After calling the fetchQuestionText function.
     var quizId;
@@ -34,6 +43,7 @@ script.
         questionNameEl.textContent = title;
     };
     function setAnswers(answers){
+        /* hopefuilly shouldn't be needed by pug
         var answersDiv = document.getElementById("answers");
         answersDiv.innerHTML = "";
         for (x in answers){
@@ -41,7 +51,7 @@ script.
             answer.setAttribute("id","answer"+x);
             answer.textContent = answers[x].text;
             answersDiv.appendChild(answer);
-        }
+        } */
     };
     function addName(Name){
         var lobbyEl = document.getElementById("people-in-quiz");
@@ -66,7 +76,7 @@ script.
     }
     function fetchQuizQuestionsQuery(){
         return new Promise(function(resolve,reject){
-            QuestionsURL = "/queryQuizQuestionsAndAnswers?id="+quizId;//Quiz id should be accessed by get request.
+            QuestionsURL = "/queryQuizQuestionsAndAnswers?id="+quizId; // Quiz id should be accessed by get request.
             var req = new XMLHttpRequest();
             req.open("GET", QuestionsURL);
             req.responseType ='json';
@@ -75,7 +85,7 @@ script.
                 // quizName=data.name;
                 // console.log(data);
                 for( i in data){
-                    quizQuestions.push(data[i]); //Create the question obj
+                    quizQuestions.push(data[i]); // Create the question obj
                 }
                 resolve("retrieve the questions and answers.");
             }
@@ -83,6 +93,7 @@ script.
         })
     }
     function startQuiz(){
+        loggedIn = true
         socket.emit('start-quiz', {'quizId': quizId});
     }
 
@@ -93,16 +104,19 @@ script.
         // setQuizTitle(QuizCreate.name);
         if('question' in QuizCreate){
             setQuestionText(QuizCreate.question.text);
-            setAnswers(QuizCreate.question.answers);
+            answers= quizCreate.question.answers;
+            // setAnswers(QuizCreate.question.answers); Shouldn't be needed with PUG
         }
     });
-        // -------On Server-----------------
-    //   io.emit('quiz-client',{
-    //     name : QuizCreate.name,
-    //     question : QuizCreate.questions[0]
-    // });
-    // This should be sent to a specific client.
-    // QuizCreate is a complete quiz object.
+
+    /* -------On Server-----------------
+         io.emit('quiz-client',{
+           name : QuizCreate.name,
+           question : QuizCreate.questions[0]
+    });
+       This should be sent to a specific client.
+       QuizCreate is a complete quiz object. */
+       
     socket.on("quiz-join-name", function(nameObj){
         if(quizId == nameObj["quizId"]){
         console.log(nameObj);
