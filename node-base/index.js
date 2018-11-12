@@ -1,13 +1,13 @@
 
-
 const app = require('express')();
 var http = require("http").Server(app);
 var io = require('socket.io')(http);
-var testQuiz = require("./QuizCreationExample.js"); //This is just for testing. 
+var testQuiz = require("./QuizCreationExample.js"); // This is just for testing. 
 var User = require("./User.js");
 var Quiz = require("./Quiz.js");
 var Question = require("./Question.js");
 var Answer = require("./Answer.js");
+require('bootstrap'); // Require this in one place for CSS
 
 var routes = require("./routes/index.js")
 app.use(routes)
@@ -122,4 +122,4 @@ function quizUnpacker(box){
 	return newQuiz;
 }
 
-http.listen(3450, ()=>console.log("Server at Localhost:3450"));
+http.listen(3450, ()=>console.log("Server at localhost:3450"));
