@@ -7,7 +7,8 @@ var User = require("./User.js");
 var Quiz = require("./Quiz.js");
 var Question = require("./Question.js");
 var Answer = require("./Answer.js");
-require('bootstrap'); // Require this in one place for CSS
+// var $ = require('jquery');
+// require('bootstrap'); // Require this in one place for CSS
 
 var routes = require("./routes/index.js")
 app.use(routes)
@@ -16,9 +17,9 @@ app.set('view engine', 'pug');
 var openQuizes = [];
 
 app.get("/",function(req,res){
-	res.sendFile(__dirname + "/views/home.html");
+	res.render(__dirname + '/views/home');
+	//res.sendFile(__dirname + "/views/home.html");
 })
-
 
 app.get("/editQuiz",function(req,res){
 	res.sendFile(__dirname + "/views/editQuiz.html");
@@ -37,9 +38,9 @@ app.get("/registration",function(req,res){
 })
 
 app.get("/quizClient",function(req,res){
-
 	//Maybe a database check on req ?quizId could go here. 
-	res.sendFile(__dirname + "/views/quizClient.html");
+	res.render(__dirname + "/views/quizClient");
+	//res.sendFile(__dirname + "/views/quizClient.html");
 	
 })
 
