@@ -1,22 +1,22 @@
 
 {
   "development": {
-    "username": "notkahoot",
-    "password": "lolpass123",
+    "username": "root",
+    "password": "mynewpass",
     "database": "nodular",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "notkahoot",
-    "password": "lolpass123",
+    "username": "root",
+    "password": "mynewpass",
     "database": "nodular",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
-    "username": "notkahoot",
-    "password": "lolpass123",
+    "username": "root",
+    "password": "mynewpass",
     "database": "nodular",
     "host": "127.0.0.1",
     "dialect": "mysql"

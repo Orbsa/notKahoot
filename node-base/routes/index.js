@@ -14,8 +14,17 @@ router.get('/start', function(req, res, next) {
 
 //TODO:Take the req.body and put it in the database. 
 router.post("/createQuizInDB",function(req,res){
-	console.log(req.body);
-	console.log(req.body.questions[0]);
+
+	models.quiz.create({"text": req.body.quizName, "quizId": req.body.proctorId}).then(quiz => {
+		req.body.questions.forEach(question =>{
+			models.question.create({'quizId': quiz.id, 'text': question.questionText}).then(quest => {
+				question.answersText.forEach(answer => {
+					console.log(answer);
+					models.answer.create({'text': answer, 'questionId': quest.id})
+				});
+			});
+		});
+	});
 	res.send("Hope this works.")
 })
 
