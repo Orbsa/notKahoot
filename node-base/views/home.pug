@@ -1,0 +1,60 @@
+doctype html
+head
+	meta(charset='utf-8')
+	meta(name='viewport', content='width=device-width, initial-scale=1')
+	// Internal Stylesheet
+	link(rel='stylesheet', type='text/css', href='css/style.css')
+	// bootstrap library
+	link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+	// jQuery library
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+	// Socket.IO
+	script(src='/socket.io/socket.io.js')
+	title  Not KaHoot 
+nav.navbar.navbar-inverse
+	.container-fluid
+		.navbar-header(join='')
+			button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
+				span.icon-bar
+				span.icon-bar
+				span.icon-bar
+			a.navbar-brand(href='#') NotKahoot
+		#myNavbar.collapse.navbar-collapse
+			ul.nav.navbar-nav
+				li.active
+					a(href='/') Join Quiz
+				li
+					a(href='registration') Registration
+			ul.nav.navbar-nav.navbar-right
+				li
+					a(href='proctorLogin')
+						span.glyphicon.glyphicon-log-in
+						|   Log In
+.container-fluid.text-center
+	.row.content
+		.col-sm-2.sidenav
+			// Left Sidebar Content
+		.col-sm-8.text-left
+			// Main Page Content
+			form
+				br
+				input#id(type='text', name='quizId')
+				button(type='button', onclick='checkId();') Submit
+		.col-sm-2.sidenav
+			// Right Sidebar Content
+footer.container-fluid.text-center
+	// Footer Content
+script.
+	var socket = io();
+	function checkId(){
+			var id = document.getElementById('id').value;
+			//console.log(id);
+			if (id == ''){
+			alert("please insert a quiz id");
+			return;
+		}
+		else{
+			console.log(id);
+			self.location.assign("userClient?quizId="+id);
+		}
+	}

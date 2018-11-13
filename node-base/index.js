@@ -1,24 +1,25 @@
 
-
 const app = require('express')();
 var http = require("http").Server(app);
 var io = require('socket.io')(http);
-var testQuiz = require("./QuizCreationExample.js"); //This is just for testing. 
+var testQuiz = require("./QuizCreationExample.js"); // This is just for testing. 
 var User = require("./User.js");
 var Quiz = require("./Quiz.js");
 var Question = require("./Question.js");
 var Answer = require("./Answer.js");
+// var $ = require('jquery');
+// require('bootstrap'); // Require this in one place for CSS
 
 var routes = require("./routes/index.js")
 app.use(routes)
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 var openQuizes = [];
 
 app.get("/",function(req,res){
-	res.sendFile(__dirname + "/views/home.html");
+	res.render(__dirname + '/views/home');
+	//res.sendFile(__dirname + "/views/home.html");
 })
-
 
 app.get("/editQuiz",function(req,res){
 	res.sendFile(__dirname + "/views/editQuiz.html");
@@ -37,9 +38,9 @@ app.get("/registration",function(req,res){
 })
 
 app.get("/quizClient",function(req,res){
-
 	//Maybe a database check on req ?quizId could go here. 
-	res.sendFile(__dirname + "/views/quizClient.html");
+	res.render(__dirname + "/views/quizClient");
+	//res.sendFile(__dirname + "/views/quizClient.html");
 	
 })
 
@@ -91,7 +92,8 @@ io.on('connection', function(socket){
 
 
 	})
-
+	
+	// Client Joins Quiz 
 	socket.on("quiz-lobby-join", function(data){
 			if (openQuizes.hasOwnProperty(data.quizId)){
 				openQuizes[data.quizId].userSocketIds.push(socket.id) //Note this may be a good place to gather names for the quiz as well. 
@@ -99,9 +101,19 @@ io.on('connection', function(socket){
 				console.log("A user joined quiz "+data.quizId+" as "+data.name);
 				// console.log(openQuizes[data.quizId]);
 			}
-		
+			else consoleLog("Socket.IO exception: Socket ID: " + socket.id + " has sent data to invalid quiz ID: " + quizId);
 	});
-	
+
+	// Client Answers Question 
+	socket.on("quiz-answer-send", function(data){
+			if (openQuizes.hasOwnProperty(data.quizId)){
+				io.sockets.connected[openQuizes[data.quizId].proctorSocketId].emit("quiz-answer-send", data);
+				console.log("Quiz ID: " + data.quizId + " - Client "+ data.userName + "Has voted for answer " +data.answerId);
+				 // TODO: Add Vote to vote count & Send user their score.
+			}
+			else consoleLog("Socket.IO exception: Socket ID: " + socket.id + " has sent data to invalid quiz ID: " + quizId);
+	});
+
 	socket.on('disconnect', function(){
 		console.log('user left');
 	});
@@ -122,4 +134,4 @@ function quizUnpacker(box){
 	return newQuiz;
 }
 
-http.listen(3450, ()=>console.log("Server at Localhost:3450"));
+http.listen(3450, ()=>console.log("Server at localhost:3450"));

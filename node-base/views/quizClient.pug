@@ -1,85 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title> Not KaHoot  </title>
-</head>
-<script src="/socket.io/socket.io.js"></script>
+doctype html
+head
+    title  Not KaHoot  
+script(src='/socket.io/socket.io.js')
+h2#quiz-name Quiz name
+if loggedIn
+    #Answers
+        h3#question-title
+        // Testing pug's for loops 
+        // - let answers= ["Test Answer 1", "Test Answer 2", "Test Anser 3"];
+        //.
+            each n, i in answers
+                p(id="answer_id_"+i)= n
+else
+    #Login
+        h3#quiz-id Log on with quiz id: 
+        button(onclick='startQuiz()')  Start Quiz 
 
-<body>
-    <h2 id="quiz-name">Quiz name</h2>
-    <h1 id="question-text"></h1>
-    <div id="answeres" > 
-        <h3 id="quiz-id">Log on with quiz id: </h3>
-        <button type="button" onclick="startQuiz()" > Start Quiz </button> <br>
-        <div id="people-in-quiz"></div>
-    </div>
-	
-</body>
-<script>
+script.
+    var loggedIn = false
     var quizName; //This is set by running fetchQuizTitle
-    var quizQuestions=[];//These should contain the answeres. After calling the fetchQuestionText function.  
+    var quizQuestions=[];//These should contain the answers. After calling the fetchQuestionText function.
     var quizId;
-
-    //---Gathering the quiz ID out of the url. 
+    //---Gathering the quiz ID out of the url.
     let url = new URL(document.URL);
     quizId=new URL(document.URL).searchParams.get("quizId");
     console.log(quizId);
     var quizIdEl = document.getElementById("quiz-id");
     quizIdEl.innerHTML+=quizId;
     //---
-
     var socket = io();
-
     function setQuizTitle(title){
         var quizNameEl = document.getElementById("quiz-name");
         quizNameEl.textContent = title;
     };
-
     function setQuestionText(title){
         var questionNameEl = document.getElementById("question-text");
         questionNameEl.textContent = title;
     };
-
     function setAnswers(answers){
-
-        var answeresDiv = document.getElementById("answeres");
-        answeresDiv.innerHTML = "";
+        var answersDiv = document.getElementById("answers");
+        answersDiv.innerHTML = "";
         for (x in answers){
             var answer = document.createElement("h3");
             answer.setAttribute("id","answer"+x);
             answer.textContent = answers[x].text;
-            answeresDiv.appendChild(answer);
-        }
+            answersDiv.appendChild(answer);
+        } 
     };
-
     function addName(Name){
         var lobbyEl = document.getElementById("people-in-quiz");
         var nameSpan = document.createElement('h4');
         nameSpan.textContent = Name;
         lobbyEl.appendChild(nameSpan);
     }
-
     function fetchQuizNameQuery(){
         return new Promise(function(resolve,reject){
-            QuizURL = "/queryQuiz?id="+quizId;//Quiz id should be accessed by get request. 
+            QuizURL = "/queryQuiz?id="+quizId;//Quiz id should be accessed by get request.
             var req = new XMLHttpRequest();
             req.open("GET", QuizURL);
             req.responseType ='json';
             req.onload = function(){
                 data = req.response;
                 quizName=data.name;
-                setQuizTitle(quizName); //Sets the name of the quiz when the name is recieved. 
+                setQuizTitle(quizName); //Sets the name of the quiz when the name is recieved.
                 resolve("retrieve the name");
             }
             req.send();
-
         })
     }
-
-    
     function fetchQuizQuestionsQuery(){
         return new Promise(function(resolve,reject){
-            QuestionsURL = "/queryQuizQuestionsAndAnswers?id="+quizId;//Quiz id should be accessed by get request. 
+            QuestionsURL = "/queryQuizQuestionsAndAnswers?id="+quizId; // Quiz id should be accessed by get request.
             var req = new XMLHttpRequest();
             req.open("GET", QuestionsURL);
             req.responseType ='json';
@@ -88,16 +79,13 @@
                 // quizName=data.name;
                 // console.log(data);
                 for( i in data){
-                    quizQuestions.push(data[i]); //Create the question obj
+                    quizQuestions.push(data[i]); // Create the question obj
                 }
                 resolve("retrieve the questions and answers.");
-
             }
             req.send();
-
         })
     }
-
     function startQuiz(){
         socket.emit('start-quiz', {'quizId': quizId});
     }
@@ -106,44 +94,35 @@
     /*This is for recieving quiz information*/
     socket.on('quiz-client',function(QuizCreate){
         console.log(QuizCreate);
-        // setQuizTitle(QuizCreate.name);
+        setQuizTitle(QuizCreate.name);
         if('question' in QuizCreate){
             setQuestionText(QuizCreate.question.text);
-            setAnswers(QuizCreate.question.answers);
+            //answers= quizCreate.question.answers;
+            setAnswers(QuizCreate.question.answers); 
         }
+    });
 
-      });
-      
-        // -------On Server-----------------  
-        //   io.emit('quiz-client',{
-        //     name : QuizCreate.name,
-        //     question : QuizCreate.questions[0]
-        // }); 
-        // This should be sent to a specific client.
-        // QuizCreate is a complete quiz object. 
-
+    /* -------On Server-----------------
+         io.emit('quiz-client',{
+           name : QuizCreate.name,
+           question : QuizCreate.questions[0]
+    });
+       This should be sent to a specific client.
+       QuizCreate is a complete quiz object. */
+       
     socket.on("quiz-join-name", function(nameObj){
         if(quizId == nameObj["quizId"]){
-            console.log(nameObj);
-            addName(nameObj["name"]);
+        console.log(nameObj);
+        addName(nameObj["name"]);
         }
-      });
-
-
-
-
-
-function onLoad(){
+    });
+    function onLoad(){
     fetchQuizNameQuery().then(val=>{
         console.log(val);
     });
     fetchQuizQuestionsQuery().then(val=>{
         console.log(val);
         socket.emit('initialize-quiz',{"quizId":quizId,"quizName":quizName,"quizQuestions":quizQuestions});
-    });
-}
-onLoad();
-
-
-</script>
-</html>
+        });
+    }
+    onLoad();

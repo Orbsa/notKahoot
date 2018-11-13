@@ -10,12 +10,18 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
-    "jade": "~1.11.0",
+    "jquery": "^3.3.1",
     "morgan": "~1.9.0",
     "mysql2": "^1.6.1",
+    "popper.js": "^1.14.5",
+    "pug": "^2.0.3",
     "sequelize": "^4.41.0",
     "sequelize-auto-migrations": "^1.0.2",
     "sequelize-cli": "^5.2.0",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "webpack": "^4.25.1"
+  },
+  "devDependencies": {
+    "bootstrap": "^4.1.3"
   }
 }
