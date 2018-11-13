@@ -5,9 +5,8 @@ h1#question-text
 #answers
     button(onclick='sendName()') Name
     input#user-name(type='text')
-script var quizName; //This is set by running fetchQuizTitle
-
-
+script.
+    var quizName; //This is set by running fetchQuizTitle
     // Gathering the quiz ID out of the url. 
     let url = new URL(document.URL);
     quizId=new URL(document.URL).searchParams.get("quizId");
@@ -15,17 +14,14 @@ script var quizName; //This is set by running fetchQuizTitle
     var userName; //This holds the name the user picked for the quiz. 
     var socket = io();
     var answersDiv = document.getElementById("answers");
-
     function setQuizTitle(title){
         var quizNameEl = document.getElementById("quiz-name");
         quizNameEl.textContent = title;
     };
-
     function setQuestionText(title){
         var questionNameEl = document.getElementById("question-text");
         questionNameEl.textContent = title;
     };
-
     function setAnswers(answers){
         answersDiv.innerHTML = ""; 
             // Clear out answers before setting new ones
@@ -37,42 +33,35 @@ script var quizName; //This is set by running fetchQuizTitle
             answersDiv.appendChild(answer);
         }
     };
-
-        return new Promise(function(resolve,reject){
-            QuizURL = "/queryQuiz?id="+quizId;//Quiz id should be accessed by get request. 
-            var req = new XMLHttpRequest();
-            req.open("GET", QuizURL);
-            req.responseType ='json';
-            req.onload = function(){
-                data = req.response;
-                quizName=data.name;
-                setQuizTitle(quizName); //Sets the name of the quiz when the name is recieved. 
-                resolve("retrieve the name");
-            }
-            req.send();
-        })
-    }
-
+    return new Promise(function(resolve,reject){
+        QuizURL = "/queryQuiz?id="+quizId;//Quiz id should be accessed by get request. 
+        var req = new XMLHttpRequest();
+        req.open("GET", QuizURL);
+        req.responseType ='json';
+        req.onload = function(){
+            data = req.response;
+            quizName=data.name;
+            setQuizTitle(quizName); //Sets the name of the quiz when the name is recieved. 
+            resolve("retrieve the name");
+        }
+        req.send();
+    });
     function sendAnswer(answerId){
         socket.emit("quiz-answer-send",{"quizId": quizId, "answerId": answerId, "userName": userName})
         answersDiv.innerHTML = "Answer Sent :^)\nAwaiting Next Question"; 
-    }
-
+    };
     function sendName(){
         var nameEl = document.getElementById("user-name");
-        if( nameEl.value == ""){
-            alert("You must choose a name");
-        }
+        if( nameEl.value == "") alert("You must choose a name");
         else{
             userName = nameEl.value;
             //This sends the name to the server. 
             console.log("Sending to server: "+ {"quizId": quizId, "name": nameEl.value});
             socket.emit("quiz-lobby-join",{"quizId": quizId, "name": nameEl.value});
             var answersDiv = document.getElementById("answers");
-            answersDiv.innerHTML = "Waiting for quiz to start.";}
-    }
-    
-
+            answersDiv.innerHTML = "Waiting for quiz to start.";
+        }
+    };
     //need: quizName, quizQuestion, quizAnswers
     /*This is for recieving quiz information*/
     function quizCreate(quizObj){
@@ -82,10 +71,8 @@ script var quizName; //This is set by running fetchQuizTitle
             setQuestionText(quizObj.question.text);
             setAnswers(QuizObj.question.answers);
         }
-    }
+    };
     socket.on('quiz-client',quizCreate(data));
-
-
     // -------On Server-----------------  
     //   io.emit('quiz-client',{
     //     name : QuizCreate.name,
@@ -93,11 +80,9 @@ script var quizName; //This is set by running fetchQuizTitle
     // }); 
     // This should be sent to a specific client.
     // QuizCreate is a complete quiz object. 
-
-function onLoad(){
-    fetchQuizNameQuery().then(val=>{
-        console.log(val);
-    });
-    
-}
-onLoad();
+    function onLoad(){
+        fetchQuizNameQuery().then(val=>{
+            console.log(val);
+        });
+    }
+    onLoad();
