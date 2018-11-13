@@ -92,7 +92,8 @@ io.on('connection', function(socket){
 
 
 	})
-
+	
+	// Client Joins Quiz 
 	socket.on("quiz-lobby-join", function(data){
 			if (openQuizes.hasOwnProperty(data.quizId)){
 				openQuizes[data.quizId].userSocketIds.push(socket.id) //Note this may be a good place to gather names for the quiz as well. 
@@ -100,9 +101,19 @@ io.on('connection', function(socket){
 				console.log("A user joined quiz "+data.quizId+" as "+data.name);
 				// console.log(openQuizes[data.quizId]);
 			}
-		
+			else consoleLog("Socket.IO exception: Socket ID: " + socket.id + " has sent data to invalid quiz ID: " + quizId);
 	});
-	
+
+	// Client Answers Question 
+	socket.on("quiz-answer-send", function(data){
+			if (openQuizes.hasOwnProperty(data.quizId)){
+				io.sockets.connected[openQuizes[data.quizId].proctorSocketId].emit("quiz-answer-send", data);
+				console.log("Quiz ID: " + data.quizId + " - Client "+ data.userName + "Has voted for answer " +data.answerId);
+				 // TODO: Add Vote to vote count & Send user their score.
+			}
+			else consoleLog("Socket.IO exception: Socket ID: " + socket.id + " has sent data to invalid quiz ID: " + quizId);
+	});
+
 	socket.on('disconnect', function(){
 		console.log('user left');
 	});
