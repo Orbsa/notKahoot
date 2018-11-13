@@ -3,26 +3,21 @@ head
     title  Not KaHoot  
 script(src='/socket.io/socket.io.js')
 h2#quiz-name Quiz name
-#Login
-    if loggedIn
-        if sentName
-            #Answers(type='none')
-                h3#question-title
-                // Testing pug's for loops 
-                // - let answers= ["Test Answer 1", "Test Answer 2", "Test Anser 3"];
-                each n, i in answers
-                    p(id="answer_id_"+i)= n
-        else
-            input#username 
-            button(onclick='sendName()') Start
-    else
+if loggedIn
+    #Answers
+        h3#question-title
+        // Testing pug's for loops 
+        // - let answers= ["Test Answer 1", "Test Answer 2", "Test Anser 3"];
+        //.
+            each n, i in answers
+                p(id="answer_id_"+i)= n
+else
+    #Login
         h3#quiz-id Log on with quiz id: 
         button(onclick='startQuiz()')  Start Quiz 
-    
 
 script.
-    var loggedIn= false;
-    var sentName= false;
+    var loggedIn = false
     var quizName; //This is set by running fetchQuizTitle
     var quizQuestions=[];//These should contain the answers. After calling the fetchQuestionText function.
     var quizId;
@@ -43,7 +38,6 @@ script.
         questionNameEl.textContent = title;
     };
     function setAnswers(answers){
-        /* hopefuilly shouldn't be needed by pug
         var answersDiv = document.getElementById("answers");
         answersDiv.innerHTML = "";
         for (x in answers){
@@ -51,7 +45,7 @@ script.
             answer.setAttribute("id","answer"+x);
             answer.textContent = answers[x].text;
             answersDiv.appendChild(answer);
-        } */
+        } 
     };
     function addName(Name){
         var lobbyEl = document.getElementById("people-in-quiz");
@@ -93,7 +87,6 @@ script.
         })
     }
     function startQuiz(){
-        loggedIn = true
         socket.emit('start-quiz', {'quizId': quizId});
     }
 
@@ -101,11 +94,11 @@ script.
     /*This is for recieving quiz information*/
     socket.on('quiz-client',function(QuizCreate){
         console.log(QuizCreate);
-        // setQuizTitle(QuizCreate.name);
+        setQuizTitle(QuizCreate.name);
         if('question' in QuizCreate){
             setQuestionText(QuizCreate.question.text);
-            answers= quizCreate.question.answers;
-            // setAnswers(QuizCreate.question.answers); Shouldn't be needed with PUG
+            //answers= quizCreate.question.answers;
+            setAnswers(QuizCreate.question.answers); 
         }
     });
 
